@@ -14,8 +14,6 @@ import tetrisevolution.models.Board;
  */
 public class BoardPanel extends JPanel implements Observer {
 
-    public static int SIZE = 20;
-
     private Board playingBoard;
 
     public BoardPanel(Board board) {
@@ -29,34 +27,28 @@ public class BoardPanel extends JPanel implements Observer {
     }
 
     public void draw(Graphics g) {
-        System.out.println("hey");
+        int size = BlockPanel.SIZE;
         for (int i = 0; i < playingBoard.getRows(); i++) {
             for (int j = 0; j < playingBoard.getColumns(); j++) {
-                if (playingBoard.getBlocks()[i][j] != null) {
-                    g.setColor(playingBoard.getBlocks()[i][j].getColor());
-                } else {
-                    g.setColor(new Color(35, 35, 35));
-                }
-                g.fill3DRect(SIZE * j, SIZE * i, SIZE, SIZE, true);
+                BlockPanel.draw(playingBoard.getBlocks()[i][j], g, i, j);
             }
         }
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        System.out.println("hey");
         super.paintComponents(g);
         draw(g);
     }
 
     @Override
     public int getWidth() {
-        return playingBoard.getColumns() * SIZE;
+        return playingBoard.getColumns() * BlockPanel.SIZE;
     }
 
     @Override
     public int getHeight() {
-        return playingBoard.getRows() * SIZE;
+        return playingBoard.getRows() * BlockPanel.SIZE;
     }
 
     @Override

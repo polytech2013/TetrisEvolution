@@ -9,9 +9,10 @@ import tetrisevolution.models.Board;
  * @author Mario
  */
 public class TetrisFrame extends JFrame {
-    
+
     private BoardPanel boardPanel;
-    
+    private LeftSidePanel leftSidePanel;
+
     private Board playingBoard;
 
     public TetrisFrame(Board playingBoard) {
@@ -27,13 +28,17 @@ public class TetrisFrame extends JFrame {
         // Create Board panel
         boardPanel = new BoardPanel(playingBoard);
         add(boardPanel, BorderLayout.CENTER);
+        
         // Create Left side panel
-        
+        leftSidePanel = new LeftSidePanel(playingBoard);
+        add(leftSidePanel, BorderLayout.WEST);
+
         // Create Right side panel
-        
         setResizable(false);
+
         setVisible(true);
         pack();
+        setLocationRelativeTo(null);
     }
 
 }

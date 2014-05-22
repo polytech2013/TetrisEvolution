@@ -1,4 +1,4 @@
-package tetrisevolution.models;
+package tetrisevolution.models.stones;
 
 import java.awt.Color;
 
