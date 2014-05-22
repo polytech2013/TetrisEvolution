@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,19 +16,18 @@ import tetrisevolution.models.Board;
  *
  * @author Mario
  */
-public class LeftSidePanel extends JPanel {
+public class RightSidePanel extends JPanel {
 
-    private JLabel scoreLabel, levelLabel, lineLabel;
     private Board board;
-    private NextStonePanel nextStonePanel;
+    private HoldStonePanel holdStonePanel;
 
-    public LeftSidePanel(Board board) {
+    public RightSidePanel(Board board) {
         this.board = board;
         initComponents();
     }
 
     private void initComponents() {
-        setBackground(new Color(220, 220, 220));
+                setBackground(new Color(220, 220, 220));
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(getWidth(), getHeight()));
@@ -38,46 +36,25 @@ public class LeftSidePanel extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 2;
-        nextStonePanel = new NextStonePanel(board);
-        add(nextStonePanel, gbc);
+        holdStonePanel = new HoldStonePanel(board);
+        add(holdStonePanel, gbc);
 
         JPanel infoPanel = new JPanel();
         infoPanel.setPreferredSize(new Dimension(getWidth() - 40, getHeight() - 240));
         infoPanel.setBackground(new Color(35, 35, 35));
         infoPanel.setLayout(new GridLayout(6, 1, 0, 0));
 
-        JLabel levelText = new JLabel("Level");
-        levelLabel = new JLabel("" + board.getLevel());
+        JLabel levelText = new JLabel("Bonus");
         levelText.setForeground(Color.white);
         levelText.setHorizontalAlignment(JLabel.CENTER);
-        levelLabel.setHorizontalAlignment(JLabel.CENTER);
-        levelLabel.setForeground(Color.white);
         infoPanel.add(levelText);
-        infoPanel.add(levelLabel);
-
-        JLabel scoreText = new JLabel("Points");
-        scoreLabel = new JLabel("" + board.getScore());
-        scoreText.setForeground(Color.white);
-        scoreLabel.setForeground(Color.white);
-        scoreLabel.setHorizontalAlignment(JLabel.CENTER);
-        scoreText.setHorizontalAlignment(JLabel.CENTER);
-        infoPanel.add(scoreText);
-        infoPanel.add(scoreLabel);
-
-        JLabel lineText = new JLabel("Lines");
-        lineLabel = new JLabel("" + board.getLines());
-        lineLabel.setForeground(Color.white);
-        lineText.setForeground(Color.white);
-        lineLabel.setHorizontalAlignment(JLabel.CENTER);
-        lineText.setHorizontalAlignment(JLabel.CENTER);
-        infoPanel.add(lineText);
-        infoPanel.add(lineLabel);
 
         gbc.insets = new Insets(40, 0, 0, 0);
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridheight = 4;
         add(infoPanel, gbc);
+
     }
 
     @Override

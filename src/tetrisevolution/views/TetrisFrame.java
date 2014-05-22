@@ -12,6 +12,7 @@ public class TetrisFrame extends JFrame {
 
     private BoardPanel boardPanel;
     private LeftSidePanel leftSidePanel;
+    private RightSidePanel rightSidePanel;
 
     private Board playingBoard;
 
@@ -34,6 +35,9 @@ public class TetrisFrame extends JFrame {
         add(leftSidePanel, BorderLayout.WEST);
 
         // Create Right side panel
+        rightSidePanel = new RightSidePanel(playingBoard);
+        add(rightSidePanel, BorderLayout.EAST);
+        
         setResizable(false);
 
         setVisible(true);

@@ -14,14 +14,13 @@ public class Board {
 
     private int score, level, lines;
 
-    private Stone active;
-    private Stone next;
+    private Stone active, next, hold;
 
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.blocks = new Block[rows][columns];
-        next = StoneFactory.generateCube();
+        next = StoneFactory.generateRandom();
     }
 
     public Stone getActive() {
@@ -32,6 +31,10 @@ public class Board {
         return next;
     }
 
+    public Stone getHold() {
+        return hold;
+    }
+    
     public int getScore() {
         return score;
     }

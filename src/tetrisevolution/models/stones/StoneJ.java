@@ -37,7 +37,7 @@ public class StoneJ extends Stone {
 
     @Override
     public int getSize() {
-        return 3;
+        return 2;
     }
 
 }

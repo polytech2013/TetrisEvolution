@@ -11,7 +11,7 @@ import tetrisevolution.models.stones.Block;
  */
 public class BlockPanel extends JComponent {
 
-    public static final int SIZE = 20;
+    public static final int SIZE = 30;
 
     public static void draw(Block block, Graphics g, double offsetY, double offsetX) {
         if (block != null) {
