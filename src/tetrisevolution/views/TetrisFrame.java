@@ -45,4 +45,8 @@ public class TetrisFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    public BoardPanel getBoardPanel() {
+        return boardPanel;
+    }
+
 }
