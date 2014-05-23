@@ -21,6 +21,7 @@ public class GameController {
 
     public GameController() {
         playingBoard = new Board(20, 10);
+        playingBoard.newGame();
 
         frame = new TetrisFrame(playingBoard);
 
@@ -70,7 +71,7 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             Stone active = playingBoard.getActive();
-            playingBoard.moveStone(active.getX(), active.getY() + 1);
+            playingBoard.dropStone();
         }
 
     }

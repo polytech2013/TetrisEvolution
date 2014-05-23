@@ -21,7 +21,10 @@ public class Board extends Observable {
 
     public Board(int rows, int columns) {
         this.rows = rows;
-        this.columns = columns;
+        this.columns = columns;      
+    }
+    
+    public void newGame() {
         this.blocks = new Block[rows][columns];
         active = StoneFactory.generateRandom();
         startStone(active);
@@ -33,13 +36,21 @@ public class Board extends Observable {
         startStone.setY(0);
     }
 
+    public void nextStone() {
+        active = next;
+        next = StoneFactory.generateRandom();
+        startStone(active);
+    }
+
     public boolean checkCollision() {
         int x, y;
         for (Block block : active.getBlocks()) {
             x = active.getX() + block.getX();
             y = active.getY() + block.getY();
 
-            if (x >= columns || y >= rows) {
+            if (x >= columns) {
+                return true;
+            } else if (y >= rows) {
                 return true;
             } else if (x < 0) {
                 return true;
@@ -50,35 +61,56 @@ public class Board extends Observable {
         return false;
     }
 
-    public void undoLastMove() {
-
-    }
-
     public void stoneToBlocks() {
-
-    }
-
-    public void checkForFullRows() {
-
+        active.undoMove();
+        for (Block block : active.getBlocks()) {
+            blocks[active.getY() + block.getY()][active.getX() + block.getX()] = block;
+        }
+        clearFullRows();
     }
 
     public void clearFullRows() {
+        boolean fullRow;
+        for (int i = 0; i < rows; i++) {
+            fullRow = true;
+            for (int j = 0; j < columns; j++) {
+                if (blocks[i][j] == null) {
+                    fullRow = false;
+                    break;
+                }
+            }
+            if (fullRow) {
+                /*for (int j = 0; j < columns; j++) {
+                    blocks[i][j] = null;
+                }*/
+                for (int k = i; k > 0; k--) {
+                    blocks[k] = blocks[k - 1];
+                }
+            }
+        }
+    }
 
+    public void dropStone() {
+        synchronized (active) {
+            saveOld();
+            active.move(active.getX(), active.getY() + 1);
+            validateMove(true);
+        }
     }
 
     public void moveStone(int x, int y) {
         synchronized (active) {
             saveOld();
-            this.active.move(x, y);
-            validateMove();
+            active.move(x, y);
+            validateMove(false);
         }
     }
 
     public void rotateStone() {
         synchronized (active) {
             saveOld();
-            this.active.rotateRight();
-            validateMove();
+            active.rotateRight();
+            validateMove(false);
         }
     }
 
@@ -88,9 +120,13 @@ public class Board extends Observable {
         oldOrientation = active.getOrientation();
     }
 
-    public void validateMove() {
+    public void validateMove(boolean isDropMove) {
         if (checkCollision()) {
             active.undoMove();
+            if (isDropMove) {
+                stoneToBlocks();
+                nextStone();
+            }
         }
         setChanged();
         notifyObservers();

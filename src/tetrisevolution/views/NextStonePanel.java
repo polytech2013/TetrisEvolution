@@ -3,6 +3,8 @@ package tetrisevolution.views;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import tetrisevolution.models.Board;
@@ -13,12 +15,13 @@ import tetrisevolution.models.stones.Stone;
  *
  * @author Mario
  */
-public class NextStonePanel extends JPanel {
+public class NextStonePanel extends JPanel implements Observer {
 
     private final Board board;
 
     public NextStonePanel(Board board) {
         this.board = board;
+        board.addObserver(this);
         initComponents();
     }
 
@@ -55,6 +58,11 @@ public class NextStonePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
+    }
+
+    @Override
+    public void update(Observable o, Object o1) {
+        repaint();
     }
 
 }

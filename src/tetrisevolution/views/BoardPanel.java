@@ -46,7 +46,6 @@ public class BoardPanel extends JPanel implements Observer {
 
     @Override
     public void paintComponent(Graphics g) {
-        System.out.println("paint");
         super.paintComponents(g);
         draw(g);
     }
@@ -63,7 +62,6 @@ public class BoardPanel extends JPanel implements Observer {
 
     @Override
     public void update(Observable o, Object o1) {
-        System.out.println("up");
         repaint();
     }
 

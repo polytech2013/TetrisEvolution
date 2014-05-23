@@ -8,9 +8,9 @@ package tetrisevolution.models.stones;
 abstract public class Stone {
         
     protected Block[] blocks;
-    protected int orientation = 0, x, y;
-    protected int oldX, oldY, oldOrientation;
-            
+    protected int x, y, orientation = 0;
+    protected int oldX, oldY, oldOrientation = 0;
+
     public Block[] getBlocks() {
         return blocks;
     }
@@ -24,7 +24,6 @@ abstract public class Stone {
     }
 
     public void setOrientation(int orientation) {
-        oldOrientation = this.orientation;
         this.orientation = orientation;
     }
 
@@ -33,7 +32,6 @@ abstract public class Stone {
     }
 
     public void setX(int x) {
-        oldX = this.x;
         this.x = x;
     }
 
@@ -42,7 +40,6 @@ abstract public class Stone {
     }
 
     public void setY(int y) {
-        oldY = this.y;
         this.y = y;
     }
     
@@ -51,8 +48,22 @@ abstract public class Stone {
     }
     
     public void move(int x, int y) {
-        setX(x);
-        setY(y);
+        saveOld();
+        this.x = x;
+        this.y = y;
+    }
+    
+    public void rotateRight() {
+        saveOld();
+        orientation = (orientation + 90) % 360;
+        rotate();
+    }
+    
+    public void rotateLeft() {
+        saveOld();
+        orientation = (orientation - 90) % 360;
+        orientation = (orientation < 0) ? (360 - Math.abs(orientation)) : orientation;
+        rotate();
     }
     
     public void undoMove() {
@@ -62,15 +73,10 @@ abstract public class Stone {
         rotate();
     }
     
-    public void rotateRight() {
-        setOrientation((orientation + 90) % 360);
-        rotate();
-    }
-    
-    public void rotateLeft() {
-        orientation = (orientation - 90) % 360;
-        setOrientation((orientation < 0) ? (360 - Math.abs(orientation)) : orientation);
-        rotate();
+    private void saveOld() {
+        oldX = this.x;
+        oldY = this.y;
+        oldOrientation = this.orientation;
     }
     
     abstract Block[] build();
