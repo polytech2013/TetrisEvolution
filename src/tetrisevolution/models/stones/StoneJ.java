@@ -10,11 +10,11 @@ public class StoneJ extends Stone {
 
     public static final Color COLOR = new Color(0, 0, 240);
 
-    // <editor-fold defaultstate="collapsed" desc="StoneJ Shapes">
-    private static final Block[] J = new Block[]{new Block(1, 0, COLOR), new Block(1, 1, COLOR), new Block(1, 2, COLOR), new Block(0, 2, COLOR)};
-    private static final Block[] J_90 = new Block[]{new Block(0, 0, COLOR), new Block(0, 1, COLOR), new Block(1, 1, COLOR), new Block(2, 1, COLOR)};
-    private static final Block[] J_180 = new Block[]{new Block(0, 0, COLOR), new Block(1, 0, COLOR), new Block(0, 1, COLOR), new Block(0, 2, COLOR)};
-    private static final Block[] J_270 = new Block[]{new Block(0, 0, COLOR), new Block(1, 0, COLOR), new Block(2, 0, COLOR), new Block(2, 1, COLOR)};
+    // <editor-fold defaultstate="collapsed" desc="StoneJ Shapes">    
+    private static final Block[] J = new Block[]{new Block(0, 0, COLOR), new Block(0, 1, COLOR), new Block(1, 1, COLOR), new Block(2, 1, COLOR)};
+    private static final Block[] J_90 = new Block[]{new Block(0, 0, COLOR), new Block(1, 0, COLOR), new Block(0, 1, COLOR), new Block(0, 2, COLOR)};
+    private static final Block[] J_180 = new Block[]{new Block(0, 0, COLOR), new Block(1, 0, COLOR), new Block(2, 0, COLOR), new Block(2, 1, COLOR)};
+    private static final Block[] J_270 = new Block[]{new Block(1, 0, COLOR), new Block(1, 1, COLOR), new Block(1, 2, COLOR), new Block(0, 2, COLOR)};
     // </editor-fold>
 
     @Override
@@ -37,7 +37,7 @@ public class StoneJ extends Stone {
 
     @Override
     public int getSize() {
-        return 2;
+        return 3;
     }
 
 }

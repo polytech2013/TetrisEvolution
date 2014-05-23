@@ -17,6 +17,8 @@ public class Board extends Observable {
 
     private Stone active, next, hold;
 
+    private int oldX, oldY, oldOrientation;
+
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
@@ -31,17 +33,64 @@ public class Board extends Observable {
         startStone.setY(0);
     }
 
+    public boolean checkCollision() {
+        int x, y;
+        for (Block block : active.getBlocks()) {
+            x = active.getX() + block.getX();
+            y = active.getY() + block.getY();
+            
+            if (x >= columns || y > rows) {
+                return true;
+            }
+            else if (x < 0) {
+                return true;
+            }
+            else if (blocks[x][y] != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void undoLastMove() {
+
+    }
+
+    public void stoneToBlocks() {
+
+    }
+
+    public void checkForFullRows() {
+
+    }
+
+    public void clearFullRows() {
+
+    }
+
     public void moveStone(int x, int y) {
+        int oldX = active.getX(), oldY = active.getY();
         this.active.move(x, y);
-        notifyMove();
+        validateMove();
     }
 
     public void rotateStone() {
         this.active.rotateRight();
-        notifyMove();
+        validateMove();
     }
 
-    public void notifyMove() {
+    public void saveOld() {
+        oldX = active.getX();
+        oldY = active.getY();
+        oldOrientation = active.getOrientation();
+    }
+
+    public void validateMove() {
+        if (checkCollision()) {
+            active.setX(oldX);
+            active.setY(oldY);
+            active.setOrientation(oldOrientation);
+        }
         setChanged();
         notifyObservers();
     }
