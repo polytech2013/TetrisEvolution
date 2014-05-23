@@ -19,13 +19,14 @@ public class GameController {
     private TetrisFrame frame;
     private Board playingBoard;
     private Timer gameTimer;
+    private int delay;
 
     public GameController() {
         playingBoard = new Board(20, 10);
         playingBoard.newGame();
 
         frame = new TetrisFrame(playingBoard);
-
+        
         gameTimer = new Timer(500, new GameListener());
         gameTimer.start();
 
@@ -81,6 +82,10 @@ public class GameController {
             } else {
                 Stone active = playingBoard.getActive();
                 playingBoard.dropStone();
+                if (playingBoard.getLines() == playingBoard.getGoal()) {                    
+                    playingBoard.setLevel(playingBoard.getLevel() + 1);
+                    gameTimer.setDelay(gameTimer.getDelay() - 20);
+                }
             }
         }
 

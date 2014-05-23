@@ -12,7 +12,7 @@ public class Board extends Observable {
 
     private int rows, columns;
     private Block[][] blocks;
-    private int score, level, lines;
+    private int score, level, lines, goal = 0;
     private Stone active, next, hold;
     private GameState state;
 
@@ -25,6 +25,7 @@ public class Board extends Observable {
         level = 1;
         score = 0;
         lines = 0;
+        setGoal();
         this.blocks = new Block[rows][columns];
         active = StoneFactory.generateRandom();
         startStone(active);
@@ -96,7 +97,7 @@ public class Board extends Observable {
         }
         linePoints(n);
     }
-    
+
     public void linePoints(int n) {
         switch (n) {
             case 1:
@@ -113,7 +114,7 @@ public class Board extends Observable {
                 break;
         }
     }
-    
+
     public void dropPoints(int points) {
         score += points;
     }
@@ -173,8 +174,21 @@ public class Board extends Observable {
         return level;
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+        setGoal();
+    }
+
     public int getLines() {
         return lines;
+    }
+
+    public int getGoal() {
+        return goal;
+    }
+
+    public void setGoal() {
+        this.goal += (level * 5);
     }
 
     public Block[][] getBlocks() {
