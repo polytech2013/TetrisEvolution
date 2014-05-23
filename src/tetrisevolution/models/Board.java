@@ -38,14 +38,12 @@ public class Board extends Observable {
         for (Block block : active.getBlocks()) {
             x = active.getX() + block.getX();
             y = active.getY() + block.getY();
-            
-            if (x >= columns || y > rows) {
+
+            if (x >= columns || y >= rows) {
                 return true;
-            }
-            else if (x < 0) {
+            } else if (x < 0) {
                 return true;
-            }
-            else if (blocks[x][y] != null) {
+            } else if (blocks[y][x] != null) {
                 return true;
             }
         }
@@ -69,14 +67,19 @@ public class Board extends Observable {
     }
 
     public void moveStone(int x, int y) {
-        int oldX = active.getX(), oldY = active.getY();
-        this.active.move(x, y);
-        validateMove();
+        synchronized (active) {
+            saveOld();
+            this.active.move(x, y);
+            validateMove();
+        }
     }
 
     public void rotateStone() {
-        this.active.rotateRight();
-        validateMove();
+        synchronized (active) {
+            saveOld();
+            this.active.rotateRight();
+            validateMove();
+        }
     }
 
     public void saveOld() {
@@ -87,9 +90,7 @@ public class Board extends Observable {
 
     public void validateMove() {
         if (checkCollision()) {
-            active.setX(oldX);
-            active.setY(oldY);
-            active.setOrientation(oldOrientation);
+            active.undoMove();
         }
         setChanged();
         notifyObservers();
