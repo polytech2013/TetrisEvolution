@@ -22,6 +22,9 @@ public class Board extends Observable {
     }
 
     public void newGame() {
+        level = 1;
+        score = 0;
+        lines = 0;
         this.blocks = new Block[rows][columns];
         active = StoneFactory.generateRandom();
         startStone(active);
@@ -74,6 +77,7 @@ public class Board extends Observable {
 
     public void clearFullRows() {
         boolean fullRow;
+        int n = 0;
         for (int i = 0; i < rows; i++) {
             fullRow = true;
             for (int j = 0; j < columns; j++) {
@@ -83,14 +87,35 @@ public class Board extends Observable {
                 }
             }
             if (fullRow) {
-                /*for (int j = 0; j < columns; j++) {
-                 blocks[i][j] = null;
-                 }*/
+                lines++;
+                n++;
                 for (int k = i; k > 0; k--) {
                     blocks[k] = blocks[k - 1];
                 }
             }
         }
+        linePoints(n);
+    }
+    
+    public void linePoints(int n) {
+        switch (n) {
+            case 1:
+                score += 40 * level;
+                break;
+            case 2:
+                score += 100 * level;
+                break;
+            case 3:
+                score += 300 * level;
+                break;
+            case 4:
+                score += 1200 * level;
+                break;
+        }
+    }
+    
+    public void dropPoints(int points) {
+        score += points;
     }
 
     public boolean dropStone() {

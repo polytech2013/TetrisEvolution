@@ -6,6 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,7 +19,7 @@ import tetrisevolution.models.Board;
  *
  * @author Mario
  */
-public class LeftSidePanel extends JPanel {
+public class LeftSidePanel extends JPanel implements Observer {
 
     private JLabel scoreLabel, levelLabel, lineLabel;
     private Board board;
@@ -25,6 +27,7 @@ public class LeftSidePanel extends JPanel {
 
     public LeftSidePanel(Board board) {
         this.board = board;
+        board.addObserver(this);
         initComponents();
     }
 
@@ -88,6 +91,13 @@ public class LeftSidePanel extends JPanel {
     @Override
     public int getWidth() {
         return 40 + 4 * BlockPanel.SIZE;
+    }
+
+    @Override
+    public void update(Observable o, Object o1) {
+        scoreLabel.setText("" + board.getScore());
+        levelLabel.setText("" + board.getLevel());
+        lineLabel.setText("" + board.getLines());
     }
 
 }

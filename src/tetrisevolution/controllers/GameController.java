@@ -49,10 +49,14 @@ public class GameController {
                     break;
                 case KeyEvent.VK_DOWN:
                     playingBoard.moveStone(active.getX(), active.getY() + 1);
+                    playingBoard.dropPoints(1);
                     gameTimer.restart();
                     break;
                 case KeyEvent.VK_SPACE:
-                    while (playingBoard.dropStone());
+                    while (playingBoard.dropStone()) {
+                        playingBoard.dropPoints(2);
+                    };
+                    
 
             }
         }
