@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.Timer;
 import tetrisevolution.models.Board;
+import tetrisevolution.models.GameState;
 import tetrisevolution.models.stones.Stone;
 import tetrisevolution.views.TetrisFrame;
 
@@ -49,9 +50,9 @@ public class GameController {
                 case KeyEvent.VK_DOWN:
                     playingBoard.moveStone(active.getX(), active.getY() + 1);
                     gameTimer.restart();
-                   break;
+                    break;
                 case KeyEvent.VK_SPACE:
-                    // Hard drop
+                    while (playingBoard.dropStone());
 
             }
         }
@@ -70,8 +71,13 @@ public class GameController {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            Stone active = playingBoard.getActive();
-            playingBoard.dropStone();
+            if (playingBoard.getState() == GameState.GAMEOVER) {
+                playingBoard.newGame();
+                gameTimer.restart();
+            } else {
+                Stone active = playingBoard.getActive();
+                playingBoard.dropStone();
+            }
         }
 
     }
