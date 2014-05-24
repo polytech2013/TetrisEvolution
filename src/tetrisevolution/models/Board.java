@@ -13,7 +13,7 @@ public class Board extends Observable {
     private int rows, columns;
     private Block[][] blocks;
     private int score, level, lines, goal = 0;
-    private Stone active, next, hold;
+    private Stone active, next, hold, tmp;
     private GameState state;
 
     public Board(int rows, int columns) {
@@ -45,6 +45,21 @@ public class Board extends Observable {
         active = next;
         next = StoneFactory.generateRandom();
         startStone(active);
+    }
+
+    public void holdStone() {
+
+        if (hold == null) {
+            hold = active;
+            this.nextStone();
+        } else {
+            tmp = active;
+            active = hold;
+            active.setX(tmp.getX());
+            active.setY(tmp.getY());
+            hold = tmp;
+
+        }
     }
 
     public boolean checkCollision() {

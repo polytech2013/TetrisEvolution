@@ -53,6 +53,9 @@ public class GameController {
                     playingBoard.dropPoints(1);
                     gameTimer.restart();
                     break;
+                case KeyEvent.VK_ENTER:
+                    playingBoard.holdStone();
+                    break;
                 case KeyEvent.VK_SPACE:
                     while (playingBoard.dropStone()) {
                         playingBoard.dropPoints(2);
@@ -77,6 +80,7 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
+                
                 playingBoard.newGame();
                 gameTimer.restart();
             } else {
