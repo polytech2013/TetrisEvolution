@@ -8,6 +8,7 @@ import javax.activity.InvalidActivityException;
 import javax.swing.Timer;
 import tetrisevolution.models.Board;
 import tetrisevolution.models.GameState;
+import tetrisevolution.models.Konami;
 import tetrisevolution.models.stones.Stone;
 import tetrisevolution.views.TetrisFrame;
 
@@ -39,6 +40,9 @@ public class GameController {
         @Override
         public void keyPressed(KeyEvent ke) {
             Stone active = playingBoard.getActive();
+            if (Konami.checkKonami(ke.getKeyCode())) {
+                System.out.println("Konami code!");
+            }
             try {
             switch (ke.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
