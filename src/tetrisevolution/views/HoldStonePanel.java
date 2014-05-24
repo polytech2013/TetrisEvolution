@@ -46,7 +46,7 @@ public class HoldStonePanel extends JPanel implements Observer {
         double offX, offY;
         if (holdStone.getSize() == 4) {
             offX = 0;
-            offY = 0.5;
+            offY = 1.5;
         } else if (holdStone.getSize() == 3) {
             offY = 1;
             offX = 0.5;
@@ -55,7 +55,7 @@ public class HoldStonePanel extends JPanel implements Observer {
             offY = 1;
         }
         for (Block block : holdStone.getBlocks()) {
-            BlockPanel.draw(block, g, block.getX() + offX, block.getY() + offY);
+            BlockPanel.draw(block, g, block.getY() + offY + 0.5, block.getX() + offX);
         }
     }
 

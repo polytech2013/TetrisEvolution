@@ -25,6 +25,7 @@ abstract public class Stone {
 
     public void setOrientation(int orientation) {
         this.orientation = orientation;
+        this.rotate();
     }
 
     public int getX() {

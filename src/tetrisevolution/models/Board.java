@@ -51,13 +51,21 @@ public class Board extends Observable {
 
         if (hold == null) {
             hold = active;
+            hold.setOrientation(0);
             this.nextStone();
         } else {
             tmp = active;
             active = hold;
             active.setX(tmp.getX());
-            active.setY(tmp.getY());
-            hold = tmp;
+            active.setY(tmp.getY());            
+            if (checkCollision()) {
+                hold = active;
+                active = tmp;
+            }
+            else {
+                hold = tmp;
+                hold.setOrientation(0);
+            }
 
         }
     }
