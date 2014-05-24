@@ -1,6 +1,7 @@
 package tetrisevolution.models;
 
 import java.util.Observable;
+import javax.activity.InvalidActivityException;
 import tetrisevolution.models.stones.Block;
 import tetrisevolution.models.stones.Stone;
 
@@ -57,16 +58,14 @@ public class Board extends Observable {
             tmp = active;
             active = hold;
             active.setX(tmp.getX());
-            active.setY(tmp.getY());            
+            active.setY(tmp.getY());
             if (checkCollision()) {
                 hold = active;
                 active = tmp;
-            }
-            else {
+            } else {
                 hold = tmp;
                 hold.setOrientation(0);
             }
-
         }
     }
 
@@ -142,21 +141,24 @@ public class Board extends Observable {
         score += points;
     }
 
-    public boolean dropStone() {
+    public boolean dropStone() throws InvalidActivityException {
+        checkState();
         synchronized (active) {
             active.move(active.getX(), active.getY() + 1);
             return validateMove(true);
         }
     }
 
-    public void moveStone(int x, int y) {
+    public void moveStone(int x, int y) throws InvalidActivityException {
+        checkState();
         synchronized (active) {
             active.move(x, y);
             validateMove(false);
         }
     }
 
-    public void rotateStone() {
+    public void rotateStone() throws InvalidActivityException {
+        checkState();
         synchronized (active) {
             active.rotateRight();
             validateMove(false);
@@ -175,6 +177,12 @@ public class Board extends Observable {
         setChanged();
         notifyObservers();
         return true;
+    }
+    
+    private void checkState() throws InvalidActivityException {
+        if (state != GameState.PLAYING) {
+            throw new InvalidActivityException();
+        }
     }
 
     public Stone getActive() {
@@ -228,5 +236,9 @@ public class Board extends Observable {
 
     public GameState getState() {
         return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
     }
 }

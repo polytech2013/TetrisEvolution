@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javax.activity.InvalidActivityException;
 import javax.swing.Timer;
 import tetrisevolution.models.Board;
 import tetrisevolution.models.GameState;
@@ -26,7 +27,7 @@ public class GameController {
         playingBoard.newGame();
 
         frame = new TetrisFrame(playingBoard);
-        
+
         gameTimer = new Timer(500, new GameListener());
         gameTimer.start();
 
@@ -38,6 +39,7 @@ public class GameController {
         @Override
         public void keyPressed(KeyEvent ke) {
             Stone active = playingBoard.getActive();
+            try {
             switch (ke.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
                     playingBoard.moveStone(active.getX() - 1, active.getY());
@@ -59,10 +61,22 @@ public class GameController {
                 case KeyEvent.VK_SPACE:
                     while (playingBoard.dropStone()) {
                         playingBoard.dropPoints(2);
-                    };
-                    
-
+                    }
+                    break;
+                case KeyEvent.VK_P:
+                    if (gameTimer.isRunning()) {
+                        gameTimer.stop();
+                        playingBoard.setState(GameState.PAUSE);
+                    } else {
+                        gameTimer.start();
+                        playingBoard.setState(GameState.PLAYING);
+                    }
+                    break;
             }
+            } catch (InvalidActivityException e) {
+                System.out.println("Unauthorised action");
+            }
+                    
         }
 
         @Override
@@ -80,13 +94,17 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
-                
+
                 playingBoard.newGame();
                 gameTimer.restart();
             } else {
                 Stone active = playingBoard.getActive();
+                try {
                 playingBoard.dropStone();
-                if (playingBoard.getLines() == playingBoard.getGoal()) {                    
+                } catch (InvalidActivityException e) {
+                    System.out.println("Unauthorised action");
+                }
+                if (playingBoard.getLines() == playingBoard.getGoal()) {
                     playingBoard.setLevel(playingBoard.getLevel() + 1);
                     gameTimer.setDelay(gameTimer.getDelay() - 20);
                 }
