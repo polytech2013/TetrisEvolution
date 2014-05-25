@@ -8,7 +8,7 @@ import java.awt.Color;
  */
 public class StoneJ extends Stone {
 
-    public static final Color COLOR = new Color(0, 0, 240);
+    public static final Color COLOR = new Color(0, 0, 204);
 
     // <editor-fold defaultstate="collapsed" desc="StoneJ Shapes">    
     private static final Block[] J = new Block[]{new Block(0, 0, COLOR), new Block(0, 1, COLOR), new Block(1, 1, COLOR), new Block(2, 1, COLOR)};

@@ -8,7 +8,7 @@ import java.awt.Color;
  */
 public class StoneZ extends Stone {
 
-    public static final Color COLOR = new Color(240, 0, 0);
+    public static final Color COLOR = new Color(204, 0, 0);
 
     // <editor-fold defaultstate="collapsed" desc="Stone Shapes">
     private static final Block[] Z = new Block[]{new Block(0, 0, COLOR), new Block(1, 0, COLOR), new Block(1, 1, COLOR), new Block(2, 1, COLOR)};

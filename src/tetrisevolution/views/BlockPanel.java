@@ -16,10 +16,12 @@ public class BlockPanel extends JComponent {
     public static void draw(Block block, Graphics g, double offsetY, double offsetX) {
         if (block != null) {
             g.setColor(block.getColor());
+            g.fill3DRect((int)(SIZE * offsetX), (int)(SIZE * offsetY), SIZE, SIZE, true);
         } else {
-            g.setColor(new Color(35, 35, 35));
+            g.setColor(new Color(40, 40, 40));
+            g.fill3DRect((int)(SIZE * offsetX), (int)(SIZE * offsetY), SIZE, SIZE, false);
         }
-        g.fill3DRect((int)(SIZE * offsetX), (int)(SIZE * offsetY), SIZE, SIZE, true);
+        
     }
     
     public static void draw(Block block, Graphics g, int offsetY, int offsetX) {
