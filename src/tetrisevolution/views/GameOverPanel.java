@@ -14,6 +14,7 @@ public class GameOverPanel extends JPanel {
     
     public GameOverPanel() {
         initComponents();
+        setVisible(false);
     }
 
     private void initComponents() {

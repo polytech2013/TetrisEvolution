@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.activity.InvalidActivityException;
 import javax.swing.Timer;
+import tetrisevolution.IAtest;
+import tetrisevolution.ai.AI;
 import tetrisevolution.models.Board;
 import tetrisevolution.models.GameState;
 import tetrisevolution.models.Konami;
@@ -43,10 +45,15 @@ public class GameController {
         public void keyPressed(KeyEvent ke) {
             Stone active = playingBoard.getActive();
             if (Konami.checkKonami(ke.getKeyCode())) {
+                IAtest AI = new IAtest(playingBoard);
                 System.out.println("Konami code!");
             }
             try {
                 switch (ke.getKeyCode()) {
+                    case KeyEvent.VK_A:
+                        AI ai = new AI();
+                     //   ai.search(playfield, tetriminoIndices);
+                        break;                    
                     case KeyEvent.VK_LEFT:
                         playingBoard.moveStone(active.getX() - 1, active.getY());
                         break;
