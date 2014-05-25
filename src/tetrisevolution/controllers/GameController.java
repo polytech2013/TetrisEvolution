@@ -16,6 +16,7 @@ import tetrisevolution.models.Board;
 import tetrisevolution.models.GameState;
 import tetrisevolution.models.Konami;
 import tetrisevolution.models.stones.Stone;
+import tetrisevolution.models.stones.StoneBonus;
 import tetrisevolution.views.TetrisFrame;
 
 /**
@@ -51,7 +52,7 @@ public class GameController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           
+
         }
     }
 
@@ -59,7 +60,7 @@ public class GameController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           
+
         }
     }
 
@@ -115,8 +116,13 @@ public class GameController {
                         playingBoard.holdStone();
                         break;
                     case KeyEvent.VK_SPACE:
-                        while (playingBoard.dropStone()) {
-                            playingBoard.dropPoints(2);
+                        if (playingBoard.getActive() instanceof StoneBonus) {
+                            StoneBonus bonus = (StoneBonus) playingBoard.getActive();
+                            bonus.unlock();
+                        } else {
+                            while (playingBoard.dropStone()) {
+                                playingBoard.dropPoints(2);
+                            }
                         }
                         break;
                     case KeyEvent.VK_P:
@@ -134,6 +140,9 @@ public class GameController {
                         frame.getBoardPanel().clearPopups();
                         playingBoard.newGame();
                         gameTimer.restart();
+                        break;
+                    case KeyEvent.VK_SHIFT:
+                        playingBoard.playBonus();
                         break;
                 }
             } catch (InvalidActivityException e) {

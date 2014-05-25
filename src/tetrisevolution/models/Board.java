@@ -6,6 +6,7 @@ import java.util.Observable;
 import javax.activity.InvalidActivityException;
 import tetrisevolution.models.stones.Block;
 import tetrisevolution.models.stones.Stone;
+import tetrisevolution.models.stones.StoneBonus;
 
 /**
  *
@@ -176,8 +177,18 @@ public class Board extends Observable {
         if (checkCollision()) {
             active.undoMove();
             if (isDropMove) {
-                stoneToBlocks();
-                nextStone();
+                if (active instanceof StoneBonus) {
+                    if (((StoneBonus) active).applyBonus(this)) {
+                        // If bonus finished
+                        nextStone();
+                    }
+                    setChanged();
+                    notifyObservers();
+                } else {
+                    stoneToBlocks();
+                    nextStone();
+                }
+                
             }
             return false;
         }
@@ -195,6 +206,12 @@ public class Board extends Observable {
             System.out.println("hey");
             bonuses.add(StoneFactory.generateBonus());
         }
+    }
+
+    public void playBonus() {
+        active = bonuses.remove(0);
+        simulated = null;
+        startStone(active);
     }
 
     private Block[] simulateHardDrop() {

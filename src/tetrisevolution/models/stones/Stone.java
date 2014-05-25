@@ -82,15 +82,15 @@ abstract public class Stone {
         rotate();
     }
 
-    private void saveOld() {
+    protected void saveOld() {
         oldX = this.x;
         oldY = this.y;
         oldOrientation = this.orientation;
     }
 
     public Block[] copyBlocks() {
-        Block[] copy = new Block[4];
-        for (int i = 0; i < 4; i++) {
+        Block[] copy = new Block[blocks.length];
+        for (int i = 0; i < blocks.length; i++) {
             copy[i] = (Block) blocks[i].clone();
         }
         return copy;

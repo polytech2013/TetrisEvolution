@@ -1,12 +1,13 @@
 package tetrisevolution.models.stones;
 
 import java.awt.Color;
+import tetrisevolution.models.Board;
 
 /**
  *
  * @author Mario
  */
-public class StoneBomb extends Stone {
+public class StoneBomb extends StoneBonus {
 
     // <editor-fold defaultstate="collapsed" desc="Stone Shapes">
     private static final Block[] BOMB = new Block[]{
@@ -30,6 +31,11 @@ public class StoneBomb extends Stone {
     @Override
     public int getSize() {
         return 4;
+    }
+
+    @Override
+    public boolean applyBonus(Board board) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
