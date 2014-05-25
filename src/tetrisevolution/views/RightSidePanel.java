@@ -27,7 +27,8 @@ public class RightSidePanel extends JPanel {
     }
 
     private void initComponents() {
-                setBackground(new Color(220, 220, 220));
+        
+        setBackground(new Color(220, 220, 220));
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setPreferredSize(new Dimension(getWidth(), getHeight()));
