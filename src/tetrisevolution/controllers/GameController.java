@@ -13,6 +13,7 @@ import tetrisevolution.IAtest;
 import tetrisevolution.ai.AI;
 import tetrisevolution.models.Board;
 import tetrisevolution.models.GameState;
+import tetrisevolution.models.HighscoreManager;
 import tetrisevolution.models.Konami;
 import tetrisevolution.models.stones.Stone;
 import tetrisevolution.views.CommandDialog;
@@ -187,6 +188,10 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
+
+                HighscoreManager hm = new HighscoreManager();
+                hm.addScore("BeonLive", playingBoard.getScore());
+                System.out.print(hm.getScores().get(0).toString());
                 gameTimer.stop();
                 frame.getBoardPanel().showGameOver();
             } else {
