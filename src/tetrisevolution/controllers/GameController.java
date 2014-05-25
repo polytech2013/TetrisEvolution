@@ -17,7 +17,7 @@ import tetrisevolution.views.TetrisFrame;
  * @author Mario
  */
 public class GameController {
-    
+
     private static final int INITIAL_DELAY = 500;
 
     private TetrisFrame frame;
@@ -80,7 +80,8 @@ public class GameController {
                             frame.getBoardPanel().clearPopups();
                         }
                         break;
-                     case KeyEvent.VK_R:
+                    case KeyEvent.VK_R:
+                        frame.getBoardPanel().clearPopups();
                         playingBoard.newGame();
                         gameTimer.restart();
                         break;
