@@ -8,20 +8,20 @@ import javax.swing.JPanel;
  *
  * @author Mario
  */
-public class GameOverPanel extends JPanel {
+public class PausePanel extends JPanel {
 
-    private JLabel gameOver;
+    private JLabel pause;
     
-    public GameOverPanel() {
+    public PausePanel() {
         initComponents();
     }
 
     private void initComponents() {
         setBackground(new Color(35, 35, 35));
-        gameOver = new JLabel("Game Over", JLabel.CENTER);
-        gameOver.setFont(new java.awt.Font("Tahoma", 0, 20));
-        gameOver.setForeground(Color.white);
-        add(gameOver);
+        pause = new JLabel("Pause", JLabel.CENTER);
+        pause.setFont(new java.awt.Font("Tahoma", 0, 20));
+        pause.setForeground(Color.white);
+        add(pause);
         
         // Hide by default
         this.setVisible(false);

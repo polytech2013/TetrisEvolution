@@ -33,6 +33,9 @@ public class BoardPanel extends JPanel implements Observer {
         
         gameOverPanel = new GameOverPanel();
         add(gameOverPanel);
+        
+        pausePanel = new PausePanel();
+        add(pausePanel);
     }
 
     public void draw(Graphics g) {

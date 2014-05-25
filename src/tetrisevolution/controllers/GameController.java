@@ -4,8 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.activity.InvalidActivityException;
 import javax.swing.Timer;
 import tetrisevolution.models.Board;
@@ -75,9 +73,11 @@ public class GameController {
                         if (gameTimer.isRunning()) {
                             gameTimer.stop();
                             playingBoard.setState(GameState.PAUSED);
+                            frame.getBoardPanel().showPause();
                         } else {
                             gameTimer.start();
                             playingBoard.setState(GameState.PLAYING);
+                            frame.getBoardPanel().clearPopups();
                         }
                         break;
                      case KeyEvent.VK_R:
