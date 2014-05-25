@@ -19,6 +19,8 @@ import tetrisevolution.views.TetrisFrame;
  * @author Mario
  */
 public class GameController {
+    
+    private static final int INITIAL_DELAY = 500;
 
     private TetrisFrame frame;
     private Board playingBoard;
@@ -31,7 +33,7 @@ public class GameController {
 
         frame = new TetrisFrame(playingBoard);
 
-        gameTimer = new Timer(500, new GameListener());
+        gameTimer = new Timer(INITIAL_DELAY, new GameListener());
         gameTimer.start();
 
         frame.getBoardPanel().addKeyListener(new KeyboardListener());
@@ -59,7 +61,7 @@ public class GameController {
                     case KeyEvent.VK_DOWN:
                         playingBoard.moveStone(active.getX(), active.getY() + 1);
                         playingBoard.dropPoints(1);
-                        gameTimer.restart();
+                        gameTimer.start();
                         break;
                     case KeyEvent.VK_ENTER:
                         playingBoard.holdStone();
@@ -72,17 +74,20 @@ public class GameController {
                     case KeyEvent.VK_P:
                         if (gameTimer.isRunning()) {
                             gameTimer.stop();
-                            playingBoard.setState(GameState.PAUSE);
+                            playingBoard.setState(GameState.PAUSED);
                         } else {
                             gameTimer.start();
                             playingBoard.setState(GameState.PLAYING);
                         }
                         break;
+                     case KeyEvent.VK_R:
+                        playingBoard.newGame();
+                        gameTimer.restart();
+                        break;
                 }
             } catch (InvalidActivityException e) {
                 System.out.println("Unauthorised action");
             }
-
         }
 
         @Override
@@ -100,15 +105,8 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
-
-                //playingBoard.gameOver();
-
                 gameTimer.stop();
-              
-                
-
-                //playingBoard.newGame();
-                //  gameTimer.restart();
+                frame.getBoardPanel().showGameOver();
             } else {
                 Stone active = playingBoard.getActive();
                 try {
