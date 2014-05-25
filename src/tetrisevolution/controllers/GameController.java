@@ -129,7 +129,13 @@ public class GameController {
                         playingBoard.moveStone(active.getX() + 1, active.getY());
                         break;
                     case KeyEvent.VK_UP:
-                        playingBoard.rotateStone();
+                        playingBoard.rotateRightStone();
+                        break;
+                    case KeyEvent.VK_C:
+                        playingBoard.rotateRightStone();
+                        break;
+                    case KeyEvent.VK_V:
+                        playingBoard.rotateLeftStone();
                         break;
                     case KeyEvent.VK_DOWN:
                         playingBoard.moveStone(active.getX(), active.getY() + 1);

@@ -160,7 +160,7 @@ public class Board extends Observable {
         }
     }
 
-    public void rotateStone() throws InvalidActivityException {
+    public void rotateRightStone() throws InvalidActivityException {
         checkState();
         synchronized (active) {
             active.rotateRight();
@@ -168,6 +168,14 @@ public class Board extends Observable {
         }
     }
 
+        public void rotateLeftStone() throws InvalidActivityException {
+        checkState();
+        synchronized (active) {
+            active.rotateLeft();
+            validateMove(false);
+        }
+    }
+    
     public boolean validateMove(boolean isDropMove) {
         if (checkCollision()) {
             active.undoMove();
