@@ -4,8 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import javax.activity.InvalidActivityException;
+import javax.swing.AbstractAction;
 import javax.swing.Timer;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import tetrisevolution.IAtest;
 import tetrisevolution.ai.AI;
 import tetrisevolution.models.Board;
@@ -37,6 +41,45 @@ public class GameController {
         gameTimer.start();
 
         frame.getBoardPanel().addKeyListener(new KeyboardListener());
+        frame.getMenu().getMenuItemNewGame().addActionListener(new NewGameActionListener());
+        frame.getMenu().getMenuItemExit().addActionListener(new ExitActionListener());
+        frame.getMenu().getMenuItemCommand().addActionListener(new CommandActionListener());
+        frame.getMenu().getMenuItemCredit().addActionListener(new CreditActionListener());
+    }
+
+    private class CreditActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           
+        }
+    }
+
+    private class CommandActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           
+        }
+    }
+
+    private class ExitActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            WindowEvent windowClosing = new WindowEvent(frame, WindowEvent.WINDOW_CLOSING);
+            frame.dispatchEvent(windowClosing);
+        }
+    }
+
+    private class NewGameActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            frame.getBoardPanel().clearPopups();
+            playingBoard.newGame();
+            gameTimer.restart();
+        }
     }
 
     private class KeyboardListener implements KeyListener {
@@ -52,8 +95,8 @@ public class GameController {
                 switch (ke.getKeyCode()) {
                     case KeyEvent.VK_A:
                         AI ai = new AI();
-                     //   ai.search(playfield, tetriminoIndices);
-                        break;                    
+                        //   ai.search(playfield, tetriminoIndices);
+                        break;
                     case KeyEvent.VK_LEFT:
                         playingBoard.moveStone(active.getX() - 1, active.getY());
                         break;

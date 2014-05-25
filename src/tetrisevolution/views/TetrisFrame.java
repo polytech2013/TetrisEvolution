@@ -13,6 +13,7 @@ public class TetrisFrame extends JFrame {
     private BoardPanel boardPanel;
     private LeftSidePanel leftSidePanel;
     private RightSidePanel rightSidePanel;
+    private MenuBar menuBar;
 
     private Board playingBoard;
 
@@ -26,10 +27,14 @@ public class TetrisFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
+        // Create Menu panel
+        menuBar = new MenuBar();
+        setJMenuBar(menuBar);
+
         // Create Board panel
         boardPanel = new BoardPanel(playingBoard);
         add(boardPanel, BorderLayout.CENTER);
-        
+
         // Create Left side panel
         leftSidePanel = new LeftSidePanel(playingBoard);
         add(leftSidePanel, BorderLayout.WEST);
@@ -37,7 +42,7 @@ public class TetrisFrame extends JFrame {
         // Create Right side panel
         rightSidePanel = new RightSidePanel(playingBoard);
         add(rightSidePanel, BorderLayout.EAST);
-        
+
         setResizable(false);
 
         setVisible(true);
@@ -47,6 +52,10 @@ public class TetrisFrame extends JFrame {
 
     public BoardPanel getBoardPanel() {
         return boardPanel;
+    }
+
+    public MenuBar getMenu() {
+        return menuBar;
     }
 
 }
