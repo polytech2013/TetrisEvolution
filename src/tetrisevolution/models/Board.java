@@ -1,5 +1,6 @@
 package tetrisevolution.models;
 
+import java.awt.Color;
 import java.util.Observable;
 import javax.activity.InvalidActivityException;
 import tetrisevolution.models.stones.Block;
@@ -15,6 +16,7 @@ public class Board extends Observable {
     private Block[][] blocks;
     private int score, level, lines, goal = 0;
     private Stone active, next, hold, tmp;
+    private Block[] simulated;
     private GameState state;
 
     public Board(int rows, int columns) {
@@ -143,6 +145,7 @@ public class Board extends Observable {
 
     public boolean dropStone() throws InvalidActivityException {
         checkState();
+        simulated = null;
         synchronized (active) {
             active.move(active.getX(), active.getY() + 1);
             return validateMove(true);
@@ -174,9 +177,35 @@ public class Board extends Observable {
             }
             return false;
         }
+        // Simulated drop
+        simulated = simulateHardDrop();
+        // Notify
         setChanged();
         notifyObservers();
         return true;
+    }
+    
+    private Block[] simulateHardDrop() {
+        int x = active.getX();
+        int y = active.getY();
+        boolean collision = false;
+        while (!collision) {
+            for (Block block : active.getBlocks()) {
+                if (y + block.getY() >= rows || (y >= 0 && blocks[y + block.getY()][x + block.getX()] != null)) {
+                    y--;
+                    collision = true;
+                    Block[] copy = active.copyBlocks();
+                    for (Block b : copy) {
+                        b.setColor(Color.darkGray);
+                        b.setY(b.getY() + y);
+                        b.setX(b.getX() + x);
+                    }
+                    return copy;
+                }
+            }
+            y++;
+        }
+        return null;
     }
     
     private void checkState() throws InvalidActivityException {
@@ -240,5 +269,9 @@ public class Board extends Observable {
 
     public void setState(GameState state) {
         this.state = state;
+    }
+
+    public Block[] getSimulated() {
+        return simulated;
     }
 }

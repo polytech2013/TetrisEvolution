@@ -80,6 +80,14 @@ abstract public class Stone {
         oldOrientation = this.orientation;
     }
     
+    public Block[] copyBlocks() {
+        Block[] copy = new Block[4];
+        for (int i = 0; i < 4; i++) {
+            copy[i] = (Block) blocks[i].clone();
+        }
+        return copy;
+    }
+    
     abstract Block[] build();
     abstract void rotate();
     public abstract int getSize();

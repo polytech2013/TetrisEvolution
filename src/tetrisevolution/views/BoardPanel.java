@@ -37,6 +37,12 @@ public class BoardPanel extends JPanel implements Observer {
                 BlockPanel.draw(playingBoard.getBlocks()[i][j], g, i, j);
             }
         }
+        // Simulation
+        if (playingBoard.getSimulated() != null) {
+            for (Block block : playingBoard.getSimulated()) {
+                BlockPanel.draw(block, g, block.getY(), block.getX());
+            }
+        }
         // Active stone
         Stone activeStone = playingBoard.getActive();
         for (Block block : activeStone.getBlocks()) {

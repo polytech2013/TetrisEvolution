@@ -7,7 +7,7 @@ import java.awt.Color;
  *
  * @author Mario
  */
-public class Block {
+public class Block implements Cloneable {
 
     private int x;
     private int y;
@@ -17,6 +17,11 @@ public class Block {
         this.x = x;
         this.y = y;
         this.color = color;
+    }
+    
+    @Override
+    public Object clone() {
+        return new Block(this.x, this.y, this.color);
     }
 
     public int getX() {
