@@ -40,21 +40,16 @@ public class RightSidePanel extends JPanel {
         holdStonePanel = new HoldStonePanel(board);
         add(holdStonePanel, gbc);
 
-        JPanel infoPanel = new JPanel();
-        infoPanel.setPreferredSize(new Dimension(getWidth() - 40, getHeight() - 240));
-        infoPanel.setBackground(new Color(35, 35, 35));
-        infoPanel.setLayout(new GridLayout(6, 1, 0, 0));
-
-        JLabel levelText = new JLabel("Bonus");
-        levelText.setForeground(Color.white);
-        levelText.setHorizontalAlignment(JLabel.CENTER);
-        infoPanel.add(levelText);
+        JPanel bonusPanel = new BonusPanel(board);
+        bonusPanel.setPreferredSize(new Dimension(getWidth() - 40, getHeight() - 240));
+        bonusPanel.setBackground(new Color(35, 35, 35));
+        bonusPanel.setLayout(new GridLayout(6, 1, 0, 0));
 
         gbc.insets = new Insets(40, 0, 0, 0);
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridheight = 4;
-        add(infoPanel, gbc);
+        add(bonusPanel, gbc);
 
     }
 

@@ -1,6 +1,7 @@
 package tetrisevolution.models;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Observable;
 import javax.activity.InvalidActivityException;
 import tetrisevolution.models.stones.Block;
@@ -18,6 +19,7 @@ public class Board extends Observable {
     private Stone active, next, hold, tmp;
     private Block[] simulated;
     private GameState state;
+    private ArrayList<Stone> bonuses;
 
     public Board(int rows, int columns) {
         this.rows = rows;
@@ -34,6 +36,7 @@ public class Board extends Observable {
         startStone(active);
         next = StoneFactory.generateRandom();
         state = GameState.PLAYING;
+        bonuses = new ArrayList<>(2);
     }
 
     public final void startStone(Stone startStone) {
@@ -123,6 +126,7 @@ public class Board extends Observable {
     }
 
     public void linePoints(int n) {
+        levelUp();
         switch (n) {
             case 1:
                 score += 40 * level;
@@ -185,6 +189,14 @@ public class Board extends Observable {
         return true;
     }
 
+    public void levelUp() {
+        this.setLevel(level + 1);
+        if (bonuses.size() < 2) {
+            System.out.println("hey");
+            bonuses.add(StoneFactory.generateBonus());
+        }
+    }
+
     private Block[] simulateHardDrop() {
         int x = active.getX();
         int y = active.getY();
@@ -210,7 +222,7 @@ public class Board extends Observable {
 
     private void checkState() throws InvalidActivityException {
         if (state != GameState.PLAYING) {
-           throw new InvalidActivityException();
+            throw new InvalidActivityException();
         }
     }
 
@@ -228,6 +240,10 @@ public class Board extends Observable {
 
     public int getScore() {
         return score;
+    }
+
+    public ArrayList<Stone> getBonuses() {
+        return bonuses;
     }
 
     public int getLevel() {

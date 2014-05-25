@@ -122,7 +122,7 @@ public class GameController {
                     System.out.println("Unauthorised action");
                 }
                 if (playingBoard.getLines() == playingBoard.getGoal()) {
-                    playingBoard.setLevel(playingBoard.getLevel() + 1);
+                    playingBoard.levelUp();
                     gameTimer.setDelay(gameTimer.getDelay() - 20);
                 }
             }

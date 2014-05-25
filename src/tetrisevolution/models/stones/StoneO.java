@@ -17,7 +17,6 @@ public class StoneO extends Stone {
 
     @Override
     Block[] build() {
-        super.setNbPosition(9);
         return O.clone();
     }
 
