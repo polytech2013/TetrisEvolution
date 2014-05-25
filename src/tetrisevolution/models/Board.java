@@ -210,7 +210,7 @@ public class Board extends Observable {
 
     private void checkState() throws InvalidActivityException {
         if (state != GameState.PLAYING) {
-            throw new InvalidActivityException();
+           throw new InvalidActivityException();
         }
     }
 

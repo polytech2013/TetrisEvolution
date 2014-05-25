@@ -19,6 +19,7 @@ public class StoneJ extends Stone {
 
     @Override
     Block[] build() {
+        super.setNbPosition(36);
         return J.clone();
     }
 

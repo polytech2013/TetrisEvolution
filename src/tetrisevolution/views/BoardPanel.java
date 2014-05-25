@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
 import tetrisevolution.models.Board;
+import tetrisevolution.models.GameState;
 import tetrisevolution.models.stones.Block;
 import tetrisevolution.models.stones.Stone;
 
@@ -18,6 +19,7 @@ public class BoardPanel extends JPanel implements Observer {
 
     private Board playingBoard;
     private GameOverPanel gameOverPanel;
+    private GridBagConstraints gbc;
 
     public BoardPanel(Board board) {
         this.playingBoard = board;
@@ -28,16 +30,13 @@ public class BoardPanel extends JPanel implements Observer {
     private void initComponents() {
         setFocusable(true);
         setPreferredSize(new Dimension(getWidth(), getHeight()));
-        
-        
-        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridheight = 2;
         gameOverPanel = new GameOverPanel(this.playingBoard);
-        add(gameOverPanel, gbc);
-
-        
+        this.add(gameOverPanel, gbc);
     }
 
     public void draw(Graphics g) {
@@ -59,8 +58,6 @@ public class BoardPanel extends JPanel implements Observer {
         for (Block block : activeStone.getBlocks()) {
             BlockPanel.draw(block, g, activeStone.getY() + block.getY(), activeStone.getX() + block.getX());
         }
-        
-     
 
     }
 
@@ -83,6 +80,7 @@ public class BoardPanel extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object o1) {
         repaint();
+
     }
 
 }
