@@ -184,7 +184,7 @@ public class Board extends Observable {
         notifyObservers();
         return true;
     }
-    
+
     private Block[] simulateHardDrop() {
         int x = active.getX();
         int y = active.getY();
@@ -207,7 +207,7 @@ public class Board extends Observable {
         }
         return null;
     }
-    
+
     private void checkState() throws InvalidActivityException {
         if (state != GameState.PLAYING) {
             throw new InvalidActivityException();

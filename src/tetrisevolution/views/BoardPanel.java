@@ -1,8 +1,8 @@
 package tetrisevolution.views;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
@@ -17,6 +17,7 @@ import tetrisevolution.models.stones.Stone;
 public class BoardPanel extends JPanel implements Observer {
 
     private Board playingBoard;
+    private GameOverPanel gameOverPanel;
 
     public BoardPanel(Board board) {
         this.playingBoard = board;
@@ -27,6 +28,16 @@ public class BoardPanel extends JPanel implements Observer {
     private void initComponents() {
         setFocusable(true);
         setPreferredSize(new Dimension(getWidth(), getHeight()));
+        
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        gameOverPanel = new GameOverPanel(this.playingBoard);
+        add(gameOverPanel, gbc);
+
+        
     }
 
     public void draw(Graphics g) {
@@ -48,6 +59,9 @@ public class BoardPanel extends JPanel implements Observer {
         for (Block block : activeStone.getBlocks()) {
             BlockPanel.draw(block, g, activeStone.getY() + block.getY(), activeStone.getX() + block.getX());
         }
+        
+     
+
     }
 
     @Override
