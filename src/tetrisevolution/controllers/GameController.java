@@ -116,7 +116,6 @@ public class GameController {
                 gameTimer.stop();
                 frame.getBoardPanel().showGameOver();
             } else {
-                Stone active = playingBoard.getActive();
                 try {
                     playingBoard.dropStone();
                 } catch (InvalidActivityException e) {

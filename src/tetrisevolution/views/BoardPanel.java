@@ -2,12 +2,10 @@ package tetrisevolution.views;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
 import tetrisevolution.models.Board;
-import tetrisevolution.models.GameState;
 import tetrisevolution.models.stones.Block;
 import tetrisevolution.models.stones.Stone;
 
