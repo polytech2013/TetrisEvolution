@@ -33,6 +33,7 @@ public class GameController {
     private Timer gameTimer;
     private int delay;
     private MusicHandler music;
+    private HighscoreManager hm = new HighscoreManager();
 
     public GameController() {
         playingBoard = new Board(20, 10);
@@ -44,6 +45,7 @@ public class GameController {
         gameTimer = new Timer(INITIAL_DELAY, new GameListener());
         gameTimer.start();
 
+        frame.getLeftSidePanel().setHighScoreText(hm.getScores().get(0).getScore());
         frame.getBoardPanel().addKeyListener(new KeyboardListener());
         frame.getMenu().getMenuItemNewGame().addActionListener(new NewGameActionListener());
         frame.getMenu().getMenuItemExit().addActionListener(new ExitActionListener());
@@ -201,9 +203,11 @@ public class GameController {
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
                 music.stop();
-                HighscoreManager hm = new HighscoreManager();
-                hm.addScore("BeonLive", playingBoard.getScore());
-                System.out.print(hm.getScores().get(0).toString());
+
+                // Add highScore
+                hm.addScore(playingBoard.getScore());
+                frame.getLeftSidePanel().setHighScoreText(hm.getScores().get(0).getScore());
+
                 gameTimer.stop();
                 frame.getBoardPanel().showGameOver();
             } else {

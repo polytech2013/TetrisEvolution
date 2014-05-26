@@ -54,6 +54,10 @@ public class TetrisFrame extends JFrame {
         return boardPanel;
     }
 
+    public LeftSidePanel getLeftSidePanel() {
+        return leftSidePanel;
+    }
+
     public MenuBar getMenu() {
         return menuBar;
     }

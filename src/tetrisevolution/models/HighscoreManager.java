@@ -36,13 +36,12 @@ public class HighscoreManager {
     }
 
     private void sort() {
-        ScoreComparator comparator = new ScoreComparator();
-        Collections.sort(scores, comparator);
+        Collections.sort(scores);
     }
 
-    public void addScore(String name, int score) {
+    public void addScore(int score) {
         loadScoreFile();
-        scores.add(new Score(name, score));
+        scores.add(new Score(score));
         updateScoreFile();
     }
 
@@ -67,7 +66,7 @@ public class HighscoreManager {
             }
         }
     }
-    
+
     public void updateScoreFile() {
         try {
             outputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
@@ -87,7 +86,7 @@ public class HighscoreManager {
             }
         }
     }
-    
+
     public String getHighscoreString() {
         String highscoreString = "";
         int max = 10;
@@ -100,7 +99,7 @@ public class HighscoreManager {
             x = max;
         }
         while (i < x) {
-            highscoreString += (i + 1) + ".\t" + _scores.get(i).getNaam() + "\t\t" + _scores.get(i).getScore() + "\n";
+            highscoreString += (i + 1) + ".\t" + _scores.get(i).getScore() + "\n";
             i++;
         }
         return highscoreString;

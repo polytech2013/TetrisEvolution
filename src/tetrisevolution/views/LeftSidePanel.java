@@ -19,7 +19,7 @@ import tetrisevolution.models.Board;
  */
 public class LeftSidePanel extends JPanel implements Observer {
 
-    private JLabel scoreLabel, levelLabel, lineLabel;
+    private JLabel scoreLabel, levelLabel, lineLabel, highScoreLabel;
     private Board board;
     private NextStonePanel nextStonePanel;
 
@@ -45,8 +45,18 @@ public class LeftSidePanel extends JPanel implements Observer {
         JPanel infoPanel = new JPanel();
         infoPanel.setPreferredSize(new Dimension(getWidth() - 40, getHeight() - 240));
         infoPanel.setBackground(new Color(35, 35, 35));
-        infoPanel.setLayout(new GridLayout(6, 1, 0, 0));
+        infoPanel.setLayout(new GridLayout(8, 1, 0, 0));
 
+
+        JLabel highScoreText = new JLabel("HighScore");
+        highScoreLabel = new JLabel ();
+        highScoreLabel.setForeground(Color.white);
+        highScoreText.setForeground(Color.white);
+        highScoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        highScoreText.setHorizontalAlignment(JLabel.CENTER);
+        infoPanel.add(highScoreText);
+        infoPanel.add(highScoreLabel);
+        
         JLabel levelText = new JLabel("Level");
         levelLabel = new JLabel("" + board.getLevel());
         levelText.setForeground(Color.white);
@@ -77,7 +87,7 @@ public class LeftSidePanel extends JPanel implements Observer {
         gbc.insets = new Insets(40, 0, 0, 0);
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.gridheight = 4;
+        gbc.gridheight = 6;
         add(infoPanel, gbc);
     }
 
@@ -97,5 +107,11 @@ public class LeftSidePanel extends JPanel implements Observer {
         levelLabel.setText("" + board.getLevel());
         lineLabel.setText("" + board.getLines());
     }
+
+    public void setHighScoreText(int highScoreLabel) {
+        this.highScoreLabel.setText(String.valueOf(highScoreLabel));
+    }
+    
+    
 
 }
