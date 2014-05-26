@@ -154,10 +154,8 @@ public class GameController {
                             StoneBonus bonus = (StoneBonus) playingBoard.getActive();
                             bonus.unlock();
                             playingBoard.setState(GameState.BONUS);
-                            delay = gameTimer.getDelay();
-                            gameTimer.setDelay(150);
                         } else {
-                            while (playingBoard.dropStone()) {
+                            while (playingBoard.dropStone(false)) {
                                 playingBoard.dropPoints(2);
                             }
                         }
@@ -209,11 +207,8 @@ public class GameController {
                 gameTimer.stop();
                 frame.getBoardPanel().showGameOver();
             } else {
-                if (playingBoard.getState() == GameState.PLAYING) {
-                    gameTimer.setDelay(delay);
-                }
                 try {
-                    playingBoard.dropStone();
+                    playingBoard.dropStone(false);
                 } catch (InvalidActivityException e) {
                     System.out.println("Unauthorised action");
                 }

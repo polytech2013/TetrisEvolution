@@ -35,15 +35,15 @@ public class StoneFactory {
         return new StoneO();
     }
 
-    public static Stone generateBonus() {
+    public static Stone generateBonus(Board board) {
         Random random = new Random();
         switch (random.nextInt(2)) {
             case 0:
-                return new StoneBomb();
+                return new StoneBomb(board);
             case 1:
-                return new StoneHammer();
+                return new StoneHammer(board);
             default:
-                return new StoneBomb();
+                return new StoneBomb(board);
         }
     }
 

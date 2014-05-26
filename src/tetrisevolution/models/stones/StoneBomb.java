@@ -61,6 +61,10 @@ public class StoneBomb extends StoneBonus {
         new Block(6, 3, StoneZ.COLOR),};
     // </editor-fold>
 
+    public StoneBomb(Board board) {
+        super(board);
+    }
+
     @Override
     Block[] build() {
         return BOMB.clone();
@@ -86,7 +90,7 @@ public class StoneBomb extends StoneBonus {
     }
 
     @Override
-    public boolean applyBonus(Board board) {
+    public boolean applyBonus() {
         size++;
         if (size == 2) {
             blocks = BOMB_2.clone();
@@ -101,8 +105,11 @@ public class StoneBomb extends StoneBonus {
                 }
             }
         }
-
-        return size == 4;
+        if (size == 4) {
+            timer.stop();
+            return true;
+        }
+        return false;
     }
 
 }

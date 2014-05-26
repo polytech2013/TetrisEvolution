@@ -156,8 +156,8 @@ public class Board extends Observable {
         score += points;
     }
 
-    public boolean dropStone() throws InvalidActivityException {
-        if (!(active instanceof StoneBonus)) {
+    public boolean dropStone(boolean skipCheck) throws InvalidActivityException {
+        if (!skipCheck) {
             checkState();
         }
         simulated = null;
@@ -196,7 +196,7 @@ public class Board extends Observable {
             active.undoMove();
             if (isDropMove) {
                 if (active instanceof StoneBonus) {
-                    if (((StoneBonus) active).applyBonus(this)) {
+                    if (((StoneBonus) active).applyBonus()) {
                         // If bonus finished
                         state = GameState.PLAYING;
                         nextStone();
@@ -214,15 +214,19 @@ public class Board extends Observable {
         // Simulated drop
         simulated = simulateHardDrop();
         // Notify
+        notifyGUI();
+        return true;
+    }
+
+    public void notifyGUI() {
         setChanged();
         notifyObservers();
-        return true;
     }
 
     public void levelUp() {
         this.setLevel(level + 1);
         if (bonuses.size() < 2) {
-            bonuses.add(StoneFactory.generateBonus());
+            bonuses.add(StoneFactory.generateBonus(this));
         }
     }
 

@@ -21,6 +21,10 @@ public class StoneHammer extends StoneBonus {
         new Block(2, 3, Color.white)};
     // </editor-fold>
 
+    public StoneHammer(Board board) {
+        super(board);
+    }
+
     @Override
     Block[] build() {
         return HAMMER.clone();
@@ -36,7 +40,7 @@ public class StoneHammer extends StoneBonus {
     }
 
     @Override
-    public boolean applyBonus(Board board) {
+    public boolean applyBonus() {
         y++;
         Block[][] boardBlocks = board.getBlocks();
         for (Block b : blocks) {
@@ -44,7 +48,11 @@ public class StoneHammer extends StoneBonus {
                 boardBlocks[y + b.getY()][x + b.getX()] = null;
             }
         }
-        return y >= board.getRows();
+        if (y >= board.getRows()) {
+            timer.stop();
+            return true;
+        }            
+        return false;
     }
 
 }
