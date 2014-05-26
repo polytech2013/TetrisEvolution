@@ -233,7 +233,7 @@ public class GameController {
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
                 // Add highScore
-                hm.addScore(playingBoard.getScore());
+                hm.addScore(playingBoard.getScore() - 2);
                 frame.getLeftSidePanel().setHighScoreText(hm.getScores().get(0).getScore());
                 gameTimer.stop();
                 frame.getBoardPanel().showGameOver();
