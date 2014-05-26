@@ -1,6 +1,7 @@
 package tetrisevolution.models.stones;
 
 import java.awt.Color;
+import tetrisevolution.helpers.MusicHandler;
 import tetrisevolution.models.Board;
 
 /**
@@ -93,6 +94,7 @@ public class StoneBomb extends StoneBonus {
     public boolean applyBonus() {
         size++;
         if (size == 2) {
+            MusicHandler.playBombSound();
             blocks = BOMB_2.clone();
             x--;
         } else if (size == 3) {
