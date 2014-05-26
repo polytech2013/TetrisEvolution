@@ -32,6 +32,7 @@ public class Board extends Observable {
         score = 0;
         lines = 0;
         setGoal();
+        hold = null;
         this.blocks = new Block[rows][columns];
         active = StoneFactory.generateRandom();
         startStone(active);
