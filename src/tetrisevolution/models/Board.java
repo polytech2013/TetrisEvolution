@@ -17,11 +17,13 @@ public class Board extends Observable {
 
     private int rows, columns;
     private Block[][] blocks;
-    private int score, level, lines, goal = 0;
+    private int score, level, lines, goal;
     private Stone active, next, hold, tmp;
     private Block[] simulated;
     private GameState state;
     private ArrayList<Stone> bonuses;
+
+    private int konamiPosition = 0;
 
     public Board(int rows, int columns) {
         this.rows = rows;
@@ -29,10 +31,10 @@ public class Board extends Observable {
     }
 
     public void newGame() {
-        level = 1;
         score = 0;
         lines = 0;
-        setGoal();
+        goal = 0;
+        setLevel(1);
         hold = null;
         this.blocks = new Block[rows][columns];
         active = StoneFactory.generateRandom();
@@ -40,13 +42,16 @@ public class Board extends Observable {
         next = StoneFactory.generateRandom();
         state = GameState.PLAYING;
         bonuses = new ArrayList<>(2);
-        bonuses.add(StoneFactory.generateBonus(this));
-        bonuses.add(StoneFactory.generateBonus(this));
     }
 
     public final void startStone(Stone startStone) {
-        startStone.setX(columns / 2 - active.getSize() / 2);
-        startStone.setY(-1);
+        if (state == GameState.KONAMI) {
+            startStone.setX(konamiPosition);
+            konamiPosition = (konamiPosition + 2) % 10;
+        } else {
+            startStone.setX(columns / 2 - active.getSize() / 2);
+            startStone.setY(-1);
+        }
         if (checkCollision()) {
             MusicHandler.playGameOverSound();
             state = GameState.GAMEOVER;
@@ -55,7 +60,11 @@ public class Board extends Observable {
 
     public void nextStone() {
         active = next;
-        next = StoneFactory.generateRandom();
+        if (state == GameState.KONAMI) {
+            next = StoneFactory.generateCube();
+        } else {
+            next = StoneFactory.generateRandom();
+        }
         startStone(active);
     }
 
@@ -157,7 +166,7 @@ public class Board extends Observable {
     }
 
     public boolean dropStone(boolean skipCheck) throws InvalidActivityException {
-        if (!skipCheck) {
+        if (!skipCheck && state != GameState.KONAMI) {
             checkState();
         }
         simulated = null;
@@ -236,6 +245,22 @@ public class Board extends Observable {
             simulated = null;
             startStone(active);
         }
+    }
+
+    public void activateKonami() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                blocks[i][j] = null;
+            }
+        }
+        active = StoneFactory.generateCube();
+        next = StoneFactory.generateCube();
+        state = GameState.KONAMI;
+        startStone(active);
+    }
+
+    public void deactivateKonami() {
+        state = GameState.PLAYING;
     }
 
     private Block[] simulateHardDrop() {

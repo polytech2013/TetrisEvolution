@@ -24,35 +24,38 @@ public class StoneHammer extends StoneBonus {
     public StoneHammer(Board board) {
         super(board);
     }
-
+    
     @Override
     Block[] build() {
         return HAMMER.clone();
     }
-
+    
     @Override
     void rotate() {
     }
-
+    
     @Override
     public int getSize() {
         return 4;
     }
-
+    
     @Override
     public boolean applyBonus() {
         y++;
         Block[][] boardBlocks = board.getBlocks();
         for (Block b : blocks) {
             if (y + b.getY() < board.getRows()) {
-                boardBlocks[y + b.getY()][x + b.getX()] = null;
+                if (boardBlocks[y + b.getY()][x + b.getX()] != null) {
+                    boardBlocks[y + b.getY()][x + b.getX()] = null;
+                    board.dropPoints(50);
+                }
             }
         }
         if (y >= board.getRows()) {
             timer.stop();
             return true;
-        }            
+        }        
         return false;
     }
-
+    
 }

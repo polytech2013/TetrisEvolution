@@ -130,6 +130,7 @@ public class GameController {
         public void actionPerformed(ActionEvent e) {
             frame.getBoardPanel().clearPopups();
             playingBoard.newGame();
+            gameTimer.setDelay(INITIAL_DELAY);
             gameTimer.restart();
         }
     }
@@ -140,69 +141,79 @@ public class GameController {
         public void keyPressed(KeyEvent ke) {
             Stone active = playingBoard.getActive();
             if (Konami.checkKonami(ke.getKeyCode())) {
-                System.out.println("Konami code!");
-            }
-            try {
-                switch (ke.getKeyCode()) {
-                    case KeyEvent.VK_A:
-                        // AI
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        playingBoard.moveStone(active.getX() - 1, active.getY());
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        playingBoard.moveStone(active.getX() + 1, active.getY());
-                        break;
-                    case KeyEvent.VK_UP:
-                        playingBoard.rotateRightStone();
-                        break;
-                    case KeyEvent.VK_C:
-                        playingBoard.rotateRightStone();
-                        break;
-                    case KeyEvent.VK_V:
-                        playingBoard.rotateLeftStone();
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        playingBoard.moveStone(active.getX(), active.getY() + 1);
-                        playingBoard.dropPoints(1);
-                        gameTimer.start();
-                        break;
-                    case KeyEvent.VK_ENTER:
-                        playingBoard.holdStone();
-                        break;
-                    case KeyEvent.VK_SPACE:
-                        if (playingBoard.getActive() instanceof StoneBonus) {
-                            StoneBonus bonus = (StoneBonus) playingBoard.getActive();
-                            bonus.unlock();
-                            playingBoard.setState(GameState.BONUS);
-                        } else {
-                            while (playingBoard.dropStone(false)) {
-                                playingBoard.dropPoints(2);
-                            }
-                        }
-                        break;
-                    case KeyEvent.VK_P:
-                        if (gameTimer.isRunning()) {
-                            gameTimer.stop();
-                            playingBoard.setState(GameState.PAUSED);
-                            frame.getBoardPanel().showPause();
-                        } else {
-                            gameTimer.start();
-                            playingBoard.setState(GameState.PLAYING);
-                            frame.getBoardPanel().clearPopups();
-                        }
-                        break;
-                    case KeyEvent.VK_R:
-                        frame.getBoardPanel().clearPopups();
-                        playingBoard.newGame();
-                        gameTimer.restart();
-                        break;
-                    case KeyEvent.VK_SHIFT:
-                        playingBoard.playBonus();
-                        break;
+                if (playingBoard.getState() == GameState.KONAMI) {
+                    playingBoard.deactivateKonami();
+                    gameTimer.setDelay(delay);
+                } else {
+                    playingBoard.activateKonami();
+                    delay = gameTimer.getDelay();
+                    gameTimer.setDelay(50);
                 }
-            } catch (InvalidActivityException e) {
-                System.out.println("Unauthorised action");
+            }
+            if (playingBoard.getState() != GameState.KONAMI) {
+                try {
+                    switch (ke.getKeyCode()) {
+                        case KeyEvent.VK_A:
+                            // AI
+                            break;
+                        case KeyEvent.VK_LEFT:
+                            playingBoard.moveStone(active.getX() - 1, active.getY());
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            playingBoard.moveStone(active.getX() + 1, active.getY());
+                            break;
+                        case KeyEvent.VK_UP:
+                            playingBoard.rotateRightStone();
+                            break;
+                        case KeyEvent.VK_C:
+                            playingBoard.rotateRightStone();
+                            break;
+                        case KeyEvent.VK_V:
+                            playingBoard.rotateLeftStone();
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            playingBoard.moveStone(active.getX(), active.getY() + 1);
+                            playingBoard.dropPoints(1);
+                            gameTimer.start();
+                            break;
+                        case KeyEvent.VK_ENTER:
+                            playingBoard.holdStone();
+                            break;
+                        case KeyEvent.VK_SPACE:
+                            if (playingBoard.getActive() instanceof StoneBonus) {
+                                StoneBonus bonus = (StoneBonus) playingBoard.getActive();
+                                bonus.unlock();
+                                playingBoard.setState(GameState.BONUS);
+                            } else {
+                                while (playingBoard.dropStone(false)) {
+                                    playingBoard.dropPoints(2);
+                                }
+                            }
+                            break;
+                        case KeyEvent.VK_P:
+                            if (gameTimer.isRunning()) {
+                                gameTimer.stop();
+                                playingBoard.setState(GameState.PAUSED);
+                                frame.getBoardPanel().showPause();
+                            } else {
+                                gameTimer.start();
+                                playingBoard.setState(GameState.PLAYING);
+                                frame.getBoardPanel().clearPopups();
+                            }
+                            break;
+                        case KeyEvent.VK_R:
+                            frame.getBoardPanel().clearPopups();
+                            playingBoard.newGame();
+                            gameTimer.setDelay(INITIAL_DELAY);
+                            gameTimer.restart();
+                            break;
+                        case KeyEvent.VK_SHIFT:
+                            playingBoard.playBonus();
+                            break;
+                    }
+                } catch (InvalidActivityException e) {
+                    System.out.println("Unauthorised action");
+                }
             }
         }
 
@@ -221,11 +232,9 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
-
                 // Add highScore
                 hm.addScore(playingBoard.getScore());
                 frame.getLeftSidePanel().setHighScoreText(hm.getScores().get(0).getScore());
-
                 gameTimer.stop();
                 frame.getBoardPanel().showGameOver();
             } else {
@@ -234,7 +243,7 @@ public class GameController {
                 } catch (InvalidActivityException e) {
                     System.out.println("Unauthorised action");
                 }
-                if (playingBoard.getLines() == playingBoard.getGoal()) {
+                if (playingBoard.getLines() >= playingBoard.getGoal()) {
                     playingBoard.levelUp();
                     if (gameTimer.getDelay() > 100) {
                         gameTimer.setDelay(gameTimer.getDelay() - 50);

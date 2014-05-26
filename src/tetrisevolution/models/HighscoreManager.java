@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tetrisevolution.models;
 
 /**
@@ -85,23 +81,5 @@ public class HighscoreManager {
                 System.out.println("[Update] Error: " + e.getMessage());
             }
         }
-    }
-
-    public String getHighscoreString() {
-        String highscoreString = "";
-        int max = 10;
-        ArrayList<Score> _scores;
-        _scores = getScores();
-
-        int i = 0;
-        int x = _scores.size();
-        if (x > max) {
-            x = max;
-        }
-        while (i < x) {
-            highscoreString += (i + 1) + ".\t" + _scores.get(i).getScore() + "\n";
-            i++;
-        }
-        return highscoreString;
     }
 }

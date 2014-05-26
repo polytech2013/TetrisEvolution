@@ -32,13 +32,13 @@ public class StoneBomb extends StoneBonus {
         new Block(2, 4, StoneZ.COLOR),
         new Block(3, 1, StoneZ.COLOR),
         new Block(3, 2, StoneL.COLOR),
-        new Block(3, 3, StoneZ.COLOR),        
+        new Block(3, 3, StoneZ.COLOR),
         new Block(4, 2, StoneZ.COLOR)};
     private static final Block[] BOMB_3 = new Block[]{
         new Block(0, 3, StoneZ.COLOR),
         new Block(1, 2, StoneZ.COLOR),
         new Block(1, 3, StoneL.COLOR),
-        new Block(1, 4, StoneZ.COLOR),        
+        new Block(1, 4, StoneZ.COLOR),
         new Block(2, 1, StoneZ.COLOR),
         new Block(2, 2, StoneL.COLOR),
         new Block(2, 3, StoneO.COLOR),
@@ -79,12 +79,11 @@ public class StoneBomb extends StoneBonus {
     public int getSize() {
         return 4;
     }
-    
+
     private boolean inLimit(int x, int y, Board board) {
         if (x < 0 || x >= board.getColumns()) {
             return false;
-        }
-        else if (y < 0 || y >= board.getRows()) {
+        } else if (y < 0 || y >= board.getRows()) {
             return false;
         }
         return true;
@@ -103,7 +102,10 @@ public class StoneBomb extends StoneBonus {
             Block[][] boardBlocks = board.getBlocks();
             for (Block b : blocks) {
                 if (inLimit(x + b.getX(), y + b.getY(), board)) {
-                    boardBlocks[y + b.getY()][x + b.getX()] = null;
+                    if (boardBlocks[y + b.getY()][x + b.getX()] != null) {
+                        boardBlocks[y + b.getY()][x + b.getX()] = null;
+                        board.dropPoints(50);
+                    }
                 }
             }
         }
