@@ -33,11 +33,14 @@ public class GameController {
     private Timer gameTimer;
     private int delay;
     private MusicHandler music;
+    private boolean sonOnOff;
     private HighscoreManager hm = new HighscoreManager();
 
     public GameController() {
         playingBoard = new Board(20, 10);
         playingBoard.newGame();
+
+        sonOnOff = true;
 
         frame = new TetrisFrame(playingBoard);
 
@@ -47,12 +50,14 @@ public class GameController {
 
         frame.getLeftSidePanel().setHighScoreText(hm.getScores().get(0).getScore());
         frame.getBoardPanel().addKeyListener(new KeyboardListener());
+        frame.getMenu().getMenuItemPlaySon().addActionListener(new PlaySonActionListener());
         frame.getMenu().getMenuItemNewGame().addActionListener(new NewGameActionListener());
         frame.getMenu().getMenuItemExit().addActionListener(new ExitActionListener());
         frame.getMenu().getMenuItemCommand().addActionListener(new CommandActionListener());
         frame.getMenu().getMenuItemCredit().addActionListener(new CreditActionListener());
 
         music = new MusicHandler("src/tetrisevolution/resources/Tetris.wav");
+
         music.loop();
     }
 
@@ -93,6 +98,20 @@ public class GameController {
                     frame.getBoardPanel().clearPopups();
                 }
             });
+        }
+    }
+
+    private class PlaySonActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (sonOnOff) {
+                music.stop();
+                sonOnOff = false;
+            } else {
+                music.loop();
+                sonOnOff = true;
+            }
         }
     }
 
@@ -202,7 +221,6 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
-                music.stop();
 
                 // Add highScore
                 hm.addScore(playingBoard.getScore());

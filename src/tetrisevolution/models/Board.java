@@ -40,6 +40,8 @@ public class Board extends Observable {
         next = StoneFactory.generateRandom();
         state = GameState.PLAYING;
         bonuses = new ArrayList<>(2);
+        bonuses.add(StoneFactory.generateBonus(this));
+        bonuses.add(StoneFactory.generateBonus(this));
     }
 
     public final void startStone(Stone startStone) {
@@ -98,7 +100,6 @@ public class Board extends Observable {
     }
 
     public void stoneToBlocks() {
-        levelUp();
         MusicHandler.playDropSound();
         active.undoMove();
         for (Block block : active.getBlocks()) {
@@ -135,7 +136,6 @@ public class Board extends Observable {
     }
 
     public void linePoints(int n) {
-        levelUp();
         switch (n) {
             case 1:
                 score += 40 * level;

@@ -16,7 +16,8 @@ import javax.swing.JMenuItem;
 public class MenuBar extends JMenuBar {
 
     private JMenu menuGame, menuHelp;
-    private JMenuItem menuItemNewGame, menuItemExit,
+    private JMenuItem menuItemNewGame,
+            menuItemPlaySon, menuItemExit,
             menuItemCommand, menuItemCredit;
 
     public MenuBar() {
@@ -27,8 +28,10 @@ public class MenuBar extends JMenuBar {
 
         menuGame = new JMenu("Game");
         menuItemNewGame = new JMenuItem("New Game");
+        menuItemPlaySon = new JMenuItem("On/Off Sound");
         menuItemExit = new JMenuItem("Exit");
         menuGame.add(menuItemNewGame);
+        menuGame.add(menuItemPlaySon);
         menuGame.add(menuItemExit);
 
         menuHelp = new JMenu("Help");
@@ -43,6 +46,10 @@ public class MenuBar extends JMenuBar {
 
     public JMenu getMenuGame() {
         return menuGame;
+    }
+
+    public JMenuItem getMenuItemPlaySon() {
+        return menuItemPlaySon;
     }
 
     public JMenu getMenuHelp() {
@@ -65,6 +72,4 @@ public class MenuBar extends JMenuBar {
         return menuItemCredit;
     }
 
-    
-    
 }
