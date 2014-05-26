@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import javax.activity.InvalidActivityException;
 import javax.swing.JDialog;
 import javax.swing.Timer;
+import tetrisevolution.helpers.MusicHandler;
 import tetrisevolution.models.Board;
 import tetrisevolution.models.GameState;
 import tetrisevolution.models.HighscoreManager;
@@ -31,6 +32,7 @@ public class GameController {
     private Board playingBoard;
     private Timer gameTimer;
     private int delay;
+    private MusicHandler music;
 
     public GameController() {
         playingBoard = new Board(20, 10);
@@ -46,6 +48,9 @@ public class GameController {
         frame.getMenu().getMenuItemExit().addActionListener(new ExitActionListener());
         frame.getMenu().getMenuItemCommand().addActionListener(new CommandActionListener());
         frame.getMenu().getMenuItemCredit().addActionListener(new CreditActionListener());
+        
+        music = new MusicHandler("Tetris.wav");
+        music.loop();
     }
 
     private class CreditActionListener implements ActionListener {
@@ -207,7 +212,7 @@ public class GameController {
                 }
                 if (playingBoard.getLines() == playingBoard.getGoal()) {
                     playingBoard.levelUp();
-                    gameTimer.setDelay(gameTimer.getDelay() - 20);
+                    gameTimer.setDelay(gameTimer.getDelay() - 50);
                 }
             }
         }
