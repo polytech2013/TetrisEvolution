@@ -4,19 +4,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.activity.InvalidActivityException;
-import javax.swing.AbstractAction;
+import javax.swing.JDialog;
 import javax.swing.Timer;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import tetrisevolution.IAtest;
 import tetrisevolution.ai.AI;
 import tetrisevolution.models.Board;
 import tetrisevolution.models.GameState;
+import tetrisevolution.models.HighscoreManager;
 import tetrisevolution.models.Konami;
 import tetrisevolution.models.stones.Stone;
-import tetrisevolution.models.stones.StoneBonus;
+import tetrisevolution.views.CommandDialog;
+import tetrisevolution.views.CreditDialog;
 import tetrisevolution.views.TetrisFrame;
 
 /**
@@ -52,7 +53,19 @@ public class GameController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            JDialog creditDialog = new CreditDialog(frame, false);
+            creditDialog.setVisible(true);
+            gameTimer.stop();
+            playingBoard.setState(GameState.PAUSED);
+            frame.getBoardPanel().showPause();
+            creditDialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    gameTimer.start();
+                    playingBoard.setState(GameState.PLAYING);
+                    frame.getBoardPanel().clearPopups();
+                }
+            });
         }
     }
 
@@ -60,7 +73,19 @@ public class GameController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            JDialog commandDialog = new CommandDialog(frame, false);
+            commandDialog.setVisible(true);
+            gameTimer.stop();
+            playingBoard.setState(GameState.PAUSED);
+            frame.getBoardPanel().showPause();
+            commandDialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    gameTimer.start();
+                    playingBoard.setState(GameState.PLAYING);
+                    frame.getBoardPanel().clearPopups();
+                }
+            });
         }
     }
 
@@ -105,7 +130,13 @@ public class GameController {
                         playingBoard.moveStone(active.getX() + 1, active.getY());
                         break;
                     case KeyEvent.VK_UP:
-                        playingBoard.rotateStone();
+                        playingBoard.rotateRightStone();
+                        break;
+                    case KeyEvent.VK_C:
+                        playingBoard.rotateRightStone();
+                        break;
+                    case KeyEvent.VK_V:
+                        playingBoard.rotateLeftStone();
                         break;
                     case KeyEvent.VK_DOWN:
                         playingBoard.moveStone(active.getX(), active.getY() + 1);
@@ -165,6 +196,10 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
+
+                HighscoreManager hm = new HighscoreManager();
+                hm.addScore("BeonLive", playingBoard.getScore());
+                System.out.print(hm.getScores().get(0).toString());
                 gameTimer.stop();
                 frame.getBoardPanel().showGameOver();
             } else {
