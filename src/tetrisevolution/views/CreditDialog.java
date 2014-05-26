@@ -20,7 +20,7 @@ import javax.swing.JLabel;
  */
 public class CreditDialog extends JDialog {
 
-    private static final String IMAGE_URL = "/resource/background.png";
+    private static final String IMAGE_URL = "/resources/background.png";
 
     public CreditDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);

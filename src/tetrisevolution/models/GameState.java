@@ -6,5 +6,5 @@ package tetrisevolution.models;
  * @author Mario
  */
 public enum GameState {
-    PLAYING, GAMEOVER, PAUSED
+    PLAYING, GAMEOVER, PAUSED, BONUS
 }

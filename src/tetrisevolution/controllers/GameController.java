@@ -40,6 +40,7 @@ public class GameController {
 
         frame = new TetrisFrame(playingBoard);
 
+        delay = INITIAL_DELAY;
         gameTimer = new Timer(INITIAL_DELAY, new GameListener());
         gameTimer.start();
 
@@ -48,8 +49,8 @@ public class GameController {
         frame.getMenu().getMenuItemExit().addActionListener(new ExitActionListener());
         frame.getMenu().getMenuItemCommand().addActionListener(new CommandActionListener());
         frame.getMenu().getMenuItemCredit().addActionListener(new CreditActionListener());
-        
-        music = new MusicHandler("Tetris.wav");
+
+        music = new MusicHandler("src/tetrisevolution/resources/Tetris.wav");
         music.loop();
     }
 
@@ -152,6 +153,9 @@ public class GameController {
                         if (playingBoard.getActive() instanceof StoneBonus) {
                             StoneBonus bonus = (StoneBonus) playingBoard.getActive();
                             bonus.unlock();
+                            playingBoard.setState(GameState.BONUS);
+                            delay = gameTimer.getDelay();
+                            gameTimer.setDelay(150);
                         } else {
                             while (playingBoard.dropStone()) {
                                 playingBoard.dropPoints(2);
@@ -198,13 +202,16 @@ public class GameController {
         @Override
         public void actionPerformed(ActionEvent ae) {
             if (playingBoard.getState() == GameState.GAMEOVER) {
-
+                music.stop();
                 HighscoreManager hm = new HighscoreManager();
                 hm.addScore("BeonLive", playingBoard.getScore());
                 System.out.print(hm.getScores().get(0).toString());
                 gameTimer.stop();
                 frame.getBoardPanel().showGameOver();
             } else {
+                if (playingBoard.getState() == GameState.PLAYING) {
+                    gameTimer.setDelay(delay);
+                }
                 try {
                     playingBoard.dropStone();
                 } catch (InvalidActivityException e) {
@@ -212,7 +219,9 @@ public class GameController {
                 }
                 if (playingBoard.getLines() == playingBoard.getGoal()) {
                     playingBoard.levelUp();
-                    gameTimer.setDelay(gameTimer.getDelay() - 50);
+                    if (gameTimer.getDelay() > 100) {
+                        gameTimer.setDelay(gameTimer.getDelay() - 50);
+                    }
                 }
             }
         }

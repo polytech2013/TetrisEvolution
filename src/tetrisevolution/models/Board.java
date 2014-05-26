@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Observable;
 import javax.activity.InvalidActivityException;
+import tetrisevolution.helpers.MusicHandler;
 import tetrisevolution.models.stones.Block;
 import tetrisevolution.models.stones.Stone;
 import tetrisevolution.models.stones.StoneBonus;
@@ -45,6 +46,7 @@ public class Board extends Observable {
         startStone.setX(columns / 2 - active.getSize() / 2);
         startStone.setY(-1);
         if (checkCollision()) {
+            MusicHandler.playGameOverSound();
             state = GameState.GAMEOVER;
         }
     }
@@ -96,6 +98,8 @@ public class Board extends Observable {
     }
 
     public void stoneToBlocks() {
+        levelUp();
+        MusicHandler.playDropSound();
         active.undoMove();
         for (Block block : active.getBlocks()) {
             if (active.getY() + block.getY() >= 0) {
@@ -124,7 +128,10 @@ public class Board extends Observable {
                 }
             }
         }
-        linePoints(n);
+        if (n > 0) {
+            MusicHandler.playLineSound();
+            linePoints(n);
+        }
     }
 
     public void linePoints(int n) {
@@ -150,7 +157,9 @@ public class Board extends Observable {
     }
 
     public boolean dropStone() throws InvalidActivityException {
-        checkState();
+        if (!(active instanceof StoneBonus)) {
+            checkState();
+        }
         simulated = null;
         synchronized (active) {
             active.move(active.getX(), active.getY() + 1);
@@ -174,14 +183,14 @@ public class Board extends Observable {
         }
     }
 
-        public void rotateLeftStone() throws InvalidActivityException {
+    public void rotateLeftStone() throws InvalidActivityException {
         checkState();
         synchronized (active) {
             active.rotateLeft();
             validateMove(false);
         }
     }
-    
+
     public boolean validateMove(boolean isDropMove) {
         if (checkCollision()) {
             active.undoMove();
@@ -189,6 +198,7 @@ public class Board extends Observable {
                 if (active instanceof StoneBonus) {
                     if (((StoneBonus) active).applyBonus(this)) {
                         // If bonus finished
+                        state = GameState.PLAYING;
                         nextStone();
                     }
                     setChanged();
@@ -197,7 +207,7 @@ public class Board extends Observable {
                     stoneToBlocks();
                     nextStone();
                 }
-                
+
             }
             return false;
         }
@@ -212,15 +222,16 @@ public class Board extends Observable {
     public void levelUp() {
         this.setLevel(level + 1);
         if (bonuses.size() < 2) {
-            System.out.println("hey");
             bonuses.add(StoneFactory.generateBonus());
         }
     }
 
     public void playBonus() {
-        active = bonuses.remove(0);
-        simulated = null;
-        startStone(active);
+        if (!bonuses.isEmpty()) {
+            active = bonuses.remove(0);
+            simulated = null;
+            startStone(active);
+        }
     }
 
     private Block[] simulateHardDrop() {
