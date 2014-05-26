@@ -16,6 +16,7 @@ import tetrisevolution.models.GameState;
 import tetrisevolution.models.HighscoreManager;
 import tetrisevolution.models.Konami;
 import tetrisevolution.models.stones.Stone;
+import tetrisevolution.models.stones.StoneBonus;
 import tetrisevolution.views.CommandDialog;
 import tetrisevolution.views.CreditDialog;
 import tetrisevolution.views.TetrisFrame;
