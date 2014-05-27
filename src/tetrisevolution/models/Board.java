@@ -42,6 +42,7 @@ public class Board extends Observable {
         next = StoneFactory.generateRandom();
         state = GameState.PLAYING;
         bonuses = new ArrayList<>(2);
+        bonuses.add(StoneFactory.generateBonus(this));
     }
 
     public final void startStone(Stone startStone) {
@@ -111,10 +112,15 @@ public class Board extends Observable {
     public void stoneToBlocks() {
         MusicHandler.playDropSound();
         active.undoMove();
-        for (Block block : active.getBlocks()) {
-            if (active.getY() + block.getY() >= 0) {
-                blocks[active.getY() + block.getY()][active.getX() + block.getX()] = block;
+        synchronized (active) {
+            for (Block block : active.getBlocks()) {
+                if (active.getY() + block.getY() >= 0) {
+                    blocks[active.getY() + block.getY()][active.getX() + block.getX()] = block;
+                }
             }
+        }
+        if (lines >= 18) {
+            System.out.println("plop");
         }
         clearFullRows();
     }

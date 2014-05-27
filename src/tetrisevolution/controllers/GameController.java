@@ -212,7 +212,7 @@ public class GameController {
                             break;
                     }
                 } catch (InvalidActivityException e) {
-                    System.out.println("Unauthorised action");
+                    //System.out.println("Unauthorised action");
                 }
             }
         }
@@ -241,7 +241,7 @@ public class GameController {
                 try {
                     playingBoard.dropStone(false);
                 } catch (InvalidActivityException e) {
-                    System.out.println("Unauthorised action");
+                    //System.out.println("Unauthorised action");
                 }
                 if (playingBoard.getLines() >= playingBoard.getGoal()) {
                     playingBoard.levelUp();
