@@ -1,9 +1,13 @@
 package tetrisevolution.models;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import javax.activity.InvalidActivityException;
+import javax.swing.Timer;
+import tetrisevolution.controllers.GameController;
 import tetrisevolution.helpers.MusicHandler;
 import tetrisevolution.models.stones.Block;
 import tetrisevolution.models.stones.Stone;
@@ -14,6 +18,8 @@ import tetrisevolution.models.stones.StoneBonus;
  * @author Mario
  */
 public class Board extends Observable {
+    
+    public static final int INITIAL_DELAY = 500;
 
     private int rows, columns;
     private Block[][] blocks;
@@ -22,12 +28,16 @@ public class Board extends Observable {
     private Block[] simulated;
     private GameState state;
     private ArrayList<Stone> bonuses;
+    private Timer gameTimer;
+    private int delay;
+    private HighscoreManager hm;
 
     private int konamiPosition = 0;
 
     public Board(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
+        hm = new HighscoreManager();
     }
 
     public void newGame() {
@@ -43,6 +53,8 @@ public class Board extends Observable {
         state = GameState.PLAYING;
         bonuses = new ArrayList<>(2);
         bonuses.add(StoneFactory.generateBonus(this));
+        gameTimer = new Timer(INITIAL_DELAY, new GameListener());
+        gameTimer.start();
     }
 
     public final void startStone(Stone startStone) {
@@ -259,10 +271,13 @@ public class Board extends Observable {
         next = StoneFactory.generateCube();
         state = GameState.KONAMI;
         startStone(active);
+        delay = gameTimer.getDelay();
+        gameTimer.setDelay(50);
     }
 
     public void deactivateKonami() {
         state = GameState.PLAYING;
+        gameTimer.setDelay(delay);
     }
 
     private Block[] simulateHardDrop() {
@@ -358,4 +373,50 @@ public class Board extends Observable {
     public Block[] getSimulated() {
         return simulated;
     }
+
+    public Timer getGameTimer() {
+        return gameTimer;
+    }
+
+    public void setGameTimer(Timer gameTimer) {
+        this.gameTimer = gameTimer;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public HighscoreManager getHm() {
+        return hm;
+    }
+    
+    private class GameListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (state == GameState.GAMEOVER) {
+                // Add highScore
+                hm.addScore(getScore());
+                gameTimer.stop();
+            } else {
+                try {
+                    dropStone(false);
+                } catch (InvalidActivityException e) {
+                    //System.out.println("Unauthorised action");
+                }
+                if (getLines() >= getGoal()) {
+                    levelUp();
+                    if (gameTimer.getDelay() > 100) {
+                        gameTimer.setDelay(gameTimer.getDelay() - 50);
+                    }
+                }
+            }
+        }
+
+    }
+    
 }

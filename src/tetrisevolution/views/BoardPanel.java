@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
 import tetrisevolution.models.Board;
+import tetrisevolution.models.GameState;
 import tetrisevolution.models.stones.Block;
 import tetrisevolution.models.stones.Stone;
 
@@ -72,6 +73,9 @@ public class BoardPanel extends JPanel implements Observer {
     @Override
     public void paintComponent(Graphics g) {
         draw(g);
+        if (playingBoard.getState() == GameState.GAMEOVER) {
+            showGameOver();
+        }
     }
 
     @Override
@@ -87,7 +91,6 @@ public class BoardPanel extends JPanel implements Observer {
     @Override
     public void update(Observable o, Object o1) {
         repaint();
-
     }
 
 }

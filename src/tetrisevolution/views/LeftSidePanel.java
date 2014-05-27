@@ -49,7 +49,12 @@ public class LeftSidePanel extends JPanel implements Observer {
 
 
         JLabel highScoreText = new JLabel("HighScore");
-        highScoreLabel = new JLabel ();
+        if (board.getHm().getScores().isEmpty()) {
+            highScoreLabel = new JLabel ("0");
+        }
+        else {
+            highScoreLabel = new JLabel ("" + board.getHm().getScores().get(0).getScore());
+        }
         highScoreLabel.setForeground(Color.white);
         highScoreText.setForeground(Color.white);
         highScoreLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -106,12 +111,12 @@ public class LeftSidePanel extends JPanel implements Observer {
         scoreLabel.setText("" + board.getScore());
         levelLabel.setText("" + board.getLevel());
         lineLabel.setText("" + board.getLines());
+        if (board.getHm().getScores().isEmpty()) {
+            highScoreLabel.setText("0");
+        }
+        else {
+            highScoreLabel.setText("" + board.getHm().getScores().get(0).getScore());
+        }
     }
-
-    public void setHighScoreText(int highScoreLabel) {
-        this.highScoreLabel.setText(String.valueOf(highScoreLabel));
-    }
-    
-    
 
 }

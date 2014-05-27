@@ -26,15 +26,11 @@ import tetrisevolution.views.TetrisFrame;
  */
 public class GameController {
 
-    private static final int INITIAL_DELAY = 500;
-
     private TetrisFrame frame;
     private Board playingBoard;
-    private Timer gameTimer;
-    private int delay;
+    
     private MusicHandler music;
     private boolean sonOnOff;
-    private HighscoreManager hm = new HighscoreManager();
 
     public GameController() {
         playingBoard = new Board(20, 10);
@@ -43,12 +39,6 @@ public class GameController {
         sonOnOff = true;
 
         frame = new TetrisFrame(playingBoard);
-
-        delay = INITIAL_DELAY;
-        gameTimer = new Timer(INITIAL_DELAY, new GameListener());
-        gameTimer.start();
-
-        frame.getLeftSidePanel().setHighScoreText(hm.getScores().get(0).getScore());
         frame.getBoardPanel().addKeyListener(new KeyboardListener());
         frame.getMenu().getMenuItemPlaySon().addActionListener(new PlaySonActionListener());
         frame.getMenu().getMenuItemNewGame().addActionListener(new NewGameActionListener());
@@ -67,13 +57,13 @@ public class GameController {
         public void actionPerformed(ActionEvent e) {
             JDialog creditDialog = new CreditDialog(frame, false);
             creditDialog.setVisible(true);
-            gameTimer.stop();
+            playingBoard.getGameTimer().stop();
             playingBoard.setState(GameState.PAUSED);
             frame.getBoardPanel().showPause();
             creditDialog.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    gameTimer.start();
+                    playingBoard.getGameTimer().start();
                     playingBoard.setState(GameState.PLAYING);
                     frame.getBoardPanel().clearPopups();
                 }
@@ -87,13 +77,13 @@ public class GameController {
         public void actionPerformed(ActionEvent e) {
             JDialog commandDialog = new CommandDialog(frame, false);
             commandDialog.setVisible(true);
-            gameTimer.stop();
+            playingBoard.getGameTimer().stop();
             playingBoard.setState(GameState.PAUSED);
             frame.getBoardPanel().showPause();
             commandDialog.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    gameTimer.start();
+                    playingBoard.getGameTimer().start();
                     playingBoard.setState(GameState.PLAYING);
                     frame.getBoardPanel().clearPopups();
                 }
@@ -130,8 +120,8 @@ public class GameController {
         public void actionPerformed(ActionEvent e) {
             frame.getBoardPanel().clearPopups();
             playingBoard.newGame();
-            gameTimer.setDelay(INITIAL_DELAY);
-            gameTimer.restart();
+            playingBoard.getGameTimer().setDelay(Board.INITIAL_DELAY);
+            playingBoard.getGameTimer().restart();
         }
     }
 
@@ -143,11 +133,8 @@ public class GameController {
             if (Konami.checkKonami(ke.getKeyCode())) {
                 if (playingBoard.getState() == GameState.KONAMI) {
                     playingBoard.deactivateKonami();
-                    gameTimer.setDelay(delay);
                 } else {
                     playingBoard.activateKonami();
-                    delay = gameTimer.getDelay();
-                    gameTimer.setDelay(50);
                 }
             }
             if (playingBoard.getState() != GameState.KONAMI) {
@@ -174,7 +161,7 @@ public class GameController {
                         case KeyEvent.VK_DOWN:
                             playingBoard.moveStone(active.getX(), active.getY() + 1);
                             playingBoard.dropPoints(1);
-                            gameTimer.start();
+                            playingBoard.getGameTimer().start();
                             break;
                         case KeyEvent.VK_ENTER:
                             playingBoard.holdStone();
@@ -191,12 +178,12 @@ public class GameController {
                             }
                             break;
                         case KeyEvent.VK_P:
-                            if (gameTimer.isRunning()) {
-                                gameTimer.stop();
+                            if (playingBoard.getGameTimer().isRunning()) {
+                                playingBoard.getGameTimer().stop();
                                 playingBoard.setState(GameState.PAUSED);
                                 frame.getBoardPanel().showPause();
                             } else {
-                                gameTimer.start();
+                                playingBoard.getGameTimer().start();
                                 playingBoard.setState(GameState.PLAYING);
                                 frame.getBoardPanel().clearPopups();
                             }
@@ -204,8 +191,8 @@ public class GameController {
                         case KeyEvent.VK_R:
                             frame.getBoardPanel().clearPopups();
                             playingBoard.newGame();
-                            gameTimer.setDelay(INITIAL_DELAY);
-                            gameTimer.restart();
+                            playingBoard.getGameTimer().setDelay(Board.INITIAL_DELAY);
+                            playingBoard.getGameTimer().restart();
                             break;
                         case KeyEvent.VK_SHIFT:
                             playingBoard.playBonus();
@@ -226,32 +213,4 @@ public class GameController {
         }
 
     }
-
-    private class GameListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent ae) {
-            if (playingBoard.getState() == GameState.GAMEOVER) {
-                // Add highScore
-                hm.addScore(playingBoard.getScore());
-                frame.getLeftSidePanel().setHighScoreText(hm.getScores().get(0).getScore());
-                gameTimer.stop();
-                frame.getBoardPanel().showGameOver();
-            } else {
-                try {
-                    playingBoard.dropStone(false);
-                } catch (InvalidActivityException e) {
-                    //System.out.println("Unauthorised action");
-                }
-                if (playingBoard.getLines() >= playingBoard.getGoal()) {
-                    playingBoard.levelUp();
-                    if (gameTimer.getDelay() > 100) {
-                        gameTimer.setDelay(gameTimer.getDelay() - 50);
-                    }
-                }
-            }
-        }
-
-    }
-
 }
