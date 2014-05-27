@@ -19,6 +19,8 @@ public class MusicHandler {
     private static MusicHandler line = new MusicHandler("src/tetrisevolution/resources/Line.wav");
     private static MusicHandler bomb = new MusicHandler("src/tetrisevolution/resources/Bomb.wav");
     private static MusicHandler gameOver = new MusicHandler("src/tetrisevolution/resources/GameOver.wav");
+    private static MusicHandler hammer = new MusicHandler("src/tetrisevolution/resources/Hammer.wav");
+    
 
     public MusicHandler(String fileName) {
         this.wavFile = new File(fileName);
@@ -55,6 +57,10 @@ public class MusicHandler {
     
     public static void playGameOverSound() {
         gameOver.play();
+    }
+    
+    public static void playHammerSound() {
+        hammer.play();
     }
 
 }

@@ -1,6 +1,7 @@
 package tetrisevolution.models.stones;
 
 import java.awt.Color;
+import tetrisevolution.helpers.MusicHandler;
 import tetrisevolution.models.Board;
 
 /**
@@ -24,28 +25,33 @@ public class StoneHammer extends StoneBonus {
     public StoneHammer(Board board) {
         super(board);
     }
-    
+
     @Override
     Block[] build() {
         return HAMMER.clone();
     }
-    
+
     @Override
     void rotate() {
     }
-    
+
     @Override
     public int getSize() {
         return 4;
     }
-    
+
     @Override
     public boolean applyBonus() {
         y++;
         Block[][] boardBlocks = board.getBlocks();
+        boolean sound = false;
         for (Block b : blocks) {
             if (y + b.getY() < board.getRows()) {
                 if (boardBlocks[y + b.getY()][x + b.getX()] != null) {
+                    if (!sound) {
+                        MusicHandler.playHammerSound();
+                        sound = false;
+                    }
                     boardBlocks[y + b.getY()][x + b.getX()] = null;
                     board.dropPoints(50);
                 }
@@ -54,8 +60,8 @@ public class StoneHammer extends StoneBonus {
         if (y >= board.getRows()) {
             timer.stop();
             return true;
-        }        
+        }
         return false;
     }
-    
+
 }
