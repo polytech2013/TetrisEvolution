@@ -69,7 +69,8 @@ public class Board extends Observable {
         startStone(active);
     }
 
-    public void holdStone() {
+    public void holdStone() throws InvalidActivityException {
+        checkState();
 
         if (hold == null) {
             hold = active;
@@ -112,15 +113,10 @@ public class Board extends Observable {
     public void stoneToBlocks() {
         MusicHandler.playDropSound();
         active.undoMove();
-        synchronized (active) {
-            for (Block block : active.getBlocks()) {
-                if (active.getY() + block.getY() >= 0) {
-                    blocks[active.getY() + block.getY()][active.getX() + block.getX()] = block;
-                }
+        for (Block block : active.getBlocks()) {
+            if (active.getY() + block.getY() >= 0) {
+                blocks[active.getY() + block.getY()][active.getX() + block.getX()] = block;
             }
-        }
-        if (lines >= 18) {
-            System.out.println("plop");
         }
         clearFullRows();
     }
@@ -140,7 +136,7 @@ public class Board extends Observable {
                 lines++;
                 n++;
                 for (int k = i; k > 0; k--) {
-                    blocks[k] = blocks[k - 1];
+                    blocks[k] = blocks[k - 1].clone();
                 }
             }
         }
